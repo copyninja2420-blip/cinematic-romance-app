@@ -6,7 +6,7 @@ import { SectionTitle } from "./SectionTitle";
 
 function Chapter({ index }: { index: number }) {
   const chapter = story[index]!;
-  const { ref, shown } = useReveal(0.25);
+  const { ref, shown } = useReveal<HTMLLIElement>(0.25);
   const [open, setOpen] = useState(index === 0);
 
   return (
