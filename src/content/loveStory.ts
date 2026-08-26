@@ -14,13 +14,23 @@ export const couple = {
   birthday: "Happy Birthday", // ← e.g. "24 August"
 };
 
-/** Romantic background music.
- *  Put an .mp3 in `public/music/our-song.mp3` and keep the path below,
- *  or paste a direct link to an audio file. Leave "" to hide the player. */
-export const music = {
-  src: "/music/our-song.mp3",
-  title: "Our Song",
-};
+/** Romantic Tamil background songs 🎶
+ *  Drop your .mp3 files into `public/music/` (e.g. `public/music/kadhal-rojave.mp3`)
+ *  or paste direct links to audio files. They play softly one after another,
+ *  and she can skip tracks with the ⏭ button. Leave the array empty to hide the player. */
+export type Track = { src: string; title: string };
+
+export const playlist: Track[] = [
+  { src: "/music/tamil-1.mp3", title: "Kadhal Rojave" },
+  { src: "/music/tamil-2.mp3", title: "Nenjukkul Peidhidum" },
+  { src: "/music/tamil-3.mp3", title: "Munbe Vaa" },
+  { src: "/music/tamil-4.mp3", title: "Anbil Avan" },
+  { src: "/music/tamil-5.mp3", title: "Vaseegara" },
+];
+
+/** kept for backwards compatibility */
+export const music = playlist[0] ?? { src: "", title: "" };
+
 
 export const opening = {
   whisper: "I made something special for you…",
