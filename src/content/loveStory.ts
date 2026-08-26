@@ -8,24 +8,25 @@
  * ────────────────────────────────────────────────────────────────
  */
 
+import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
+import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
+import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
+
 export const couple = {
   wifeName: "My Love", // ← her name
   husbandName: "Yours Forever", // ← your name
   birthday: "Happy Birthday", // ← e.g. "24 August"
 };
 
-/** Romantic Tamil background songs 🎶
- *  Drop your .mp3 files into `public/music/` (e.g. `public/music/kadhal-rojave.mp3`)
- *  or paste direct links to audio files. They play softly one after another,
- *  and she can skip tracks with the ⏭ button. Leave the array empty to hide the player. */
+/** Romantic background music 🎶
+ *  These bundled instrumentals work immediately. Replace their `src` values with
+ *  licensed Tamil song files whenever you are ready to personalize the playlist. */
 export type Track = { src: string; title: string };
 
 export const playlist: Track[] = [
-  { src: "/music/tamil-1.mp3", title: "Kadhal Rojave" },
-  { src: "/music/tamil-2.mp3", title: "Nenjukkul Peidhidum" },
-  { src: "/music/tamil-3.mp3", title: "Munbe Vaa" },
-  { src: "/music/tamil-4.mp3", title: "Anbil Avan" },
-  { src: "/music/tamil-5.mp3", title: "Vaseegara" },
+  { src: deserveLoved.url, title: "Deserve to Be Loved" },
+  { src: faithLove.url, title: "Faith — Love Remix" },
+  { src: memoryAway.url, title: "A Memory Away" },
 ];
 
 /** kept for backwards compatibility */
