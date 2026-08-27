@@ -11,6 +11,11 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
 import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
+import photoUs1 from "@/assets/photos/Snapchat-1625205945-2.jpg.asset.json";
+import photoUs2 from "@/assets/photos/Snapchat-1634327033-2.jpg.asset.json";
+import photoUs3 from "@/assets/photos/file_0000000014fc71fa8c9a1eacdf6b924f-2.png.asset.json";
+import photoUs4 from "@/assets/photos/Snapchat-1267333793-2.jpg.asset.json";
+import photoUs5 from "@/assets/photos/Snapchat-1001237552.jpg.asset.json";
 
 export const couple = {
   wifeName: "My Love", // ← her name
