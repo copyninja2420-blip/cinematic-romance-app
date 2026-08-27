@@ -11,12 +11,6 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
 import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
-import photo1 from "@/assets/photos/photo-1.json";
-import photo2 from "@/assets/photos/photo-2.json";
-import photo3 from "@/assets/photos/photo-3.json";
-import photo4 from "@/assets/photos/photo-4.json";
-import photo5 from "@/assets/photos/photo-5.json";
-import photo6 from "@/assets/photos/photo-6.json";
 
 export const couple = {
   wifeName: "My Love", // ← her name
@@ -63,47 +57,41 @@ export const story: StoryChapter[] = [
     date: "[ ADD THE DATE ]",
     caption: "Where everything quietly began",
     body: "[ Write about the first time you saw her — the place, what she wore, what you thought in that very first second. ]",
-    image: photo1.url,
   },
   {
     label: "The Moment I Fell For You",
     date: "[ ADD THE DATE ]",
     caption: "The second my heart decided",
     body: "[ Describe the small ordinary moment when you knew she was the one. ]",
-    image: photo3.url,
   },
   {
     label: "Our Favorite Memories",
     date: "[ ADD THE DATE ]",
     caption: "The days we keep replaying",
     body: "[ Our trips, our late-night talks, the songs, the rain, the silly fights and the sweeter making-ups. ]",
-    image: photo4.url,
   },
   {
     label: "The Moments I Never Want To Forget",
     date: "[ ADD THE DATE ]",
     caption: "Held safely in my heart",
     body: "[ The moments that made a home out of us — write them here exactly as you remember them. ]",
-    image: photo5.url,
   },
   {
     label: "Forever Starts With Us",
     date: "Today & always",
     caption: "Every chapter after this one",
     body: "[ Write about the life you dream of building with her. ]",
-    image: photo6.url,
   },
 ];
 
 export type Memory = { caption: string; note: string; image?: string };
 
 export const gallery: Memory[] = [
-  { caption: "Your Smile ❤️", note: "[ add photo ]", image: photo1.url },
-  { caption: "My Favorite Memory", note: "[ add photo ]", image: photo2.url },
-  { caption: "Us Together", note: "[ add photo ]", image: photo3.url },
-  { caption: "The Moment I Knew", note: "[ add photo ]", image: photo4.url },
-  { caption: "Forever With You", note: "[ add photo ]", image: photo5.url },
-  { caption: "Just Us Two", note: "[ add photo ]", image: photo6.url },
+  { caption: "Your Smile ❤️", note: "[ add photo ]" },
+  { caption: "My Favorite Memory", note: "[ add photo ]" },
+  { caption: "Us Together", note: "[ add photo ]" },
+  { caption: "The Moment I Knew", note: "[ add photo ]" },
+  { caption: "Forever With You", note: "[ add photo ]" },
 ];
 
 export const letter = {
