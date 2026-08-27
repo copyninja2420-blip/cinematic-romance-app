@@ -11,6 +11,12 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
 import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
+import photo1 from "@/assets/photos/photo-1.json";
+import photo2 from "@/assets/photos/photo-2.json";
+import photo3 from "@/assets/photos/photo-3.json";
+import photo4 from "@/assets/photos/photo-4.json";
+import photo5 from "@/assets/photos/photo-5.json";
+import photo6 from "@/assets/photos/photo-6.json";
 
 export const couple = {
   wifeName: "My Love", // ← her name
