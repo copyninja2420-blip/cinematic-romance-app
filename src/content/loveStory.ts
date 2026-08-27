@@ -11,6 +11,11 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
 import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
+import photoUs1 from "@/assets/photos/Snapchat-1625205945-2.jpg.asset.json";
+import photoUs2 from "@/assets/photos/Snapchat-1634327033-2.jpg.asset.json";
+import photoUs3 from "@/assets/photos/file_0000000014fc71fa8c9a1eacdf6b924f-2.png.asset.json";
+import photoUs4 from "@/assets/photos/Snapchat-1267333793-2.jpg.asset.json";
+import photoUs5 from "@/assets/photos/Snapchat-1001237552.jpg.asset.json";
 
 export const couple = {
   wifeName: "My Love", // ← her name
@@ -57,41 +62,46 @@ export const story: StoryChapter[] = [
     date: "[ ADD THE DATE ]",
     caption: "Where everything quietly began",
     body: "[ Write about the first time you saw her — the place, what she wore, what you thought in that very first second. ]",
+    image: photoUs1.url,
   },
   {
     label: "The Moment I Fell For You",
     date: "[ ADD THE DATE ]",
     caption: "The second my heart decided",
     body: "[ Describe the small ordinary moment when you knew she was the one. ]",
+    image: photoUs4.url,
   },
   {
     label: "Our Favorite Memories",
     date: "[ ADD THE DATE ]",
     caption: "The days we keep replaying",
     body: "[ Our trips, our late-night talks, the songs, the rain, the silly fights and the sweeter making-ups. ]",
+    image: photoUs5.url,
   },
   {
     label: "The Moments I Never Want To Forget",
     date: "[ ADD THE DATE ]",
     caption: "Held safely in my heart",
     body: "[ The moments that made a home out of us — write them here exactly as you remember them. ]",
+    image: photoUs2.url,
   },
   {
     label: "Forever Starts With Us",
     date: "Today & always",
     caption: "Every chapter after this one",
     body: "[ Write about the life you dream of building with her. ]",
+    image: photoUs3.url,
   },
 ];
 
 export type Memory = { caption: string; note: string; image?: string };
 
 export const gallery: Memory[] = [
-  { caption: "Your Smile ❤️", note: "[ add photo ]" },
-  { caption: "My Favorite Memory", note: "[ add photo ]" },
-  { caption: "Us Together", note: "[ add photo ]" },
-  { caption: "The Moment I Knew", note: "[ add photo ]" },
-  { caption: "Forever With You", note: "[ add photo ]" },
+  { caption: "Your Smile ❤️", note: "[ add photo ]", image: photoUs1.url },
+  { caption: "My Favorite Memory", note: "[ add photo ]", image: photoUs5.url },
+  { caption: "Us Together", note: "[ add photo ]", image: photoUs3.url },
+  { caption: "The Moment I Knew", note: "[ add photo ]", image: photoUs4.url },
+  { caption: "Forever With You", note: "[ add photo ]", image: photoUs2.url },
 ];
 
 export const letter = {
