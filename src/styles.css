@@ -810,3 +810,76 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── fireworks ── */
+@utility fireworks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@utility firework {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+@utility spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: spark-fly;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.12, 0.7, 0.25, 1);
+}
+
+@keyframes spark-fly {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  8% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--tx), calc(var(--ty) + 26px), 0) scale(1);
+  }
+}
+
+/* ── tap hearts ── */
+@utility tap-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+
+@utility tap-heart {
+  position: absolute;
+  translate: -50% -50%;
+  font-size: 1.4rem;
+  animation: tap-pop 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tap-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px) scale(0.8);
+  }
+}
