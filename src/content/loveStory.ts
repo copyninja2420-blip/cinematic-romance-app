@@ -107,7 +107,15 @@ export const gallery: Memory[] = [
 export const letter = {
   button: "Open My Letter 💌",
   greeting: "Dear My Love,",
-  body: "[PLACE MY PERSONAL LETTER HERE]",
+  body: `Finally the time came 🫴💖✨
+
+🎊 Wish you a many more happy returns of the day dii pondatii 🫂 Don't worry about anything chlm 🥰 I am always with you chlm ❤️‍🩹 Thaniya irruka nu nenachukatha — na eppavum unkooda tha irrukean, irrupean 💕 Athanala chamathu pullaya olunga saptu, olunga thoonganum 🪄 Yaaru ethu sonnalum kandukatha chlm 👣 Kavala padatha — pesuruvanga vaiyellam onna sendhu oru odaikurom 👍
+
+Na iniki varaikum unna epudi pathukutean la ennaku thrl, ana unna after mrg ennala mudinja varaikum na unna vechu pathupean dii thanga maiyulu 💯 Unnaku sila yoosana varum — enga mrg ku apram Ivan maariruvan oh — un mela sathiyam ah, mrg after nu illa, eppavum mara matean pattu 💯
+
+Be brave ❤️‍🔥 Be strong 💪 You're a lucky chalm too me dii pondatiii 🫀 Nee ethayum nenachu kavala padatha chlm — atha intha mama oda aasa 😘 Always keep smiling 😊
+
+Ok once again — happy birthday dii azhagu puzha... 🎉 Love you soo much vairam ahh ummmmmmmmmaaaaaaaaaaaaaahhhhhhhhh 😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋😘💋`,
   signature: "Forever yours ❤️",
 };
 
