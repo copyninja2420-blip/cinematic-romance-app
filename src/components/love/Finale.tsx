@@ -58,7 +58,7 @@ export function Finale() {
               </div>
             )}
 
-            <p className="mt-14 text-[0.7rem] uppercase tracking-[0.35em] text-warm/40">
+            <p className="romantic mt-14 text-2xl text-gold-soft/80">
               {couple.husbandName}
             </p>
           </>

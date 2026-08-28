@@ -27,7 +27,7 @@ export function Hero() {
         <h1 className="mt-6 font-display text-[2.35rem] leading-[1.15] tracking-wide text-warm text-glow">
           Happy Birthday,
           <br />
-          <span className="text-gradient-love">{couple.wifeName} ❤️</span>
+          <span className="romantic text-5xl leading-[1.1] text-gradient-love">{couple.wifeName} ❤️</span>
         </h1>
 
         <p className="mx-auto mt-7 max-w-sm text-[0.98rem] leading-relaxed text-warm/70">

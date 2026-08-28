@@ -171,6 +171,7 @@
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-script: "Parisienne", cursive;
+  --font-romantic: "Great Vibes", "Parisienne", cursive;
   --font-sans: "Jost", system-ui, sans-serif;
 }
 
@@ -201,6 +202,11 @@
 
 @utility script {
   font-family: var(--font-script);
+  font-weight: 400;
+}
+
+@utility romantic {
+  font-family: var(--font-romantic);
   font-weight: 400;
 }
 
