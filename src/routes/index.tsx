@@ -8,6 +8,7 @@ import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { Opening } from "@/components/love/Opening";
 import { Reasons } from "@/components/love/Reasons";
+import { ShareButton } from "@/components/love/ShareButton";
 import { Surprise } from "@/components/love/Surprise";
 import { Timeline } from "@/components/love/Timeline";
 import { couple } from "@/content/loveStory";
