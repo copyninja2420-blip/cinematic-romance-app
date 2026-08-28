@@ -55,7 +55,7 @@ export function LoveLetter() {
         </div>
 
         {!open && (
-          <button type="button" onClick={() => setOpen(true)} className="btn-love mx-auto mt-8 block">
+          <button type="button" onClick={openLetter} className="btn-love mx-auto mt-8 block">
             <span className="btn-love-glow" />
             <span className="relative">{letter.button}</span>
           </button>
