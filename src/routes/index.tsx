@@ -54,9 +54,16 @@ function LoveStoryPage() {
             <Surprise />
             <Reasons />
             <Finale />
+            <div className="flex flex-col items-center gap-5 pb-6">
+              <ShareButton />
+            </div>
             <footer className="pb-14 text-center">
               <p className="script text-lg text-gold-soft/80">
-                For {couple.wifeName}, with all my heart ❤
+                For{" "}
+                <span className="romantic text-2xl text-gradient-love">
+                  {couple.wifeName}
+                </span>
+                , with all my heart ❤
               </p>
             </footer>
           </div>
