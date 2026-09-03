@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   text: string;
@@ -7,6 +7,7 @@ type Props = {
   delay?: number;
   className?: string;
   caret?: boolean;
+  onDone?: () => void;
 };
 
 /** Gradual, handwritten-feeling text reveal. */
@@ -17,9 +18,11 @@ export function Typewriter({
   delay = 0,
   className,
   caret = true,
+  onDone,
 }: Props) {
   const [count, setCount] = useState(0);
   const [begun, setBegun] = useState(delay === 0);
+  const doneRef = useRef(false);
 
   useEffect(() => {
     if (!start || delay === 0) return;
@@ -36,9 +39,17 @@ export function Typewriter({
 
   useEffect(() => {
     setCount(0);
+    doneRef.current = false;
   }, [text]);
 
   const done = count >= text.length;
+
+  useEffect(() => {
+    if (done && !doneRef.current) {
+      doneRef.current = true;
+      onDone?.();
+    }
+  }, [done, onDone]);
 
   return (
     <span className={className}>
