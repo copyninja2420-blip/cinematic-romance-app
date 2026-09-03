@@ -9,8 +9,10 @@ type BurstHeart = { left: number; size: number; delay: number; duration: number 
 
 export function LoveLetter() {
   const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState(false);
   const [burst, setBurst] = useState<BurstHeart[]>([]);
   const { ref, shown } = useReveal(0.25);
+  const handleDone = useCallback(() => setTyped(true), []);
 
   const openLetter = () => {
     setOpen(true);
