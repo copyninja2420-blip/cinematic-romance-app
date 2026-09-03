@@ -901,19 +901,20 @@
 @keyframes rocket-rise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) scaleY(1);
+    transform: translate3d(0, var(--rise), 0) scaleY(1);
   }
   6% {
     opacity: 1;
+    transform: translate3d(0, calc(var(--rise) * 0.8), 0) scaleY(2.2);
   }
-  26% {
+  24% {
     opacity: 1;
-    transform: translate3d(0, var(--rise), 0) scaleY(2.2);
+    transform: translate3d(0, 0, 0) scaleY(1.6);
   }
-  30%,
+  28%,
   100% {
     opacity: 0;
-    transform: translate3d(0, var(--rise), 0) scaleY(0.4);
+    transform: translate3d(0, 0, 0) scaleY(0.4);
   }
 }
 

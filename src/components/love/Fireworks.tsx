@@ -17,7 +17,7 @@ export function Fireworks({ bursts = 5, sparks = 12 }: { bursts?: number; sparks
         return {
           left: 10 + rnd(b + 3) * 80,
           top,
-          rise: -(100 - top),
+          rise: 100 - top,
           delay: rnd(b + 61) * 4.5,
           dur: 2.6 + rnd(b + 91) * 1.6,
           color: HUES[b % HUES.length],
