@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { letter } from "@/content/loveStory";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionTitle } from "./SectionTitle";
@@ -9,8 +9,10 @@ type BurstHeart = { left: number; size: number; delay: number; duration: number 
 
 export function LoveLetter() {
   const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState(false);
   const [burst, setBurst] = useState<BurstHeart[]>([]);
   const { ref, shown } = useReveal(0.25);
+  const handleDone = useCallback(() => setTyped(true), []);
 
   const openLetter = () => {
     setOpen(true);
@@ -66,13 +68,17 @@ export function LoveLetter() {
           <div className="letter-paper animate-rise mt-6">
             <p className="script text-2xl text-ink">{letter.greeting}</p>
             <p className="mt-4 min-h-24 whitespace-pre-line font-serif text-[0.95rem] leading-relaxed text-ink/80">
-              <Typewriter text={letter.body} speed={38} />
+              <Typewriter text={letter.body} speed={22} onDone={handleDone} />
             </p>
-            <p className="romantic name-shimmer mt-6 text-right text-3xl">{letter.signature}</p>
+            {typed && (
+              <p className="romantic name-shimmer animate-rise mt-6 text-right text-3xl">
+                {letter.signature}
+              </p>
+            )}
           </div>
         )}
 
-        {open && <MoreSurprises />}
+        {open && typed && <MoreSurprises />}
       </div>
     </section>
   );
