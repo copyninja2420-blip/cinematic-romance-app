@@ -119,6 +119,37 @@ Ok once again — happy birthday dii azhagu puzha... 🎉 Love you soo much vair
   signature: "Forever yours, SRIHARANNANTHINI ❤️",
 };
 
+export type ExtraSurprise = {
+  kicker: string;
+  title: string;
+  button: string;
+  text: string;
+  hearts?: boolean;
+};
+
+/** Little hidden reveals that unlock after the letter is opened. */
+export const extraSurprises: ExtraSurprise[] = [
+  {
+    kicker: "Hidden message",
+    title: "One more thing I never said",
+    button: "Unlock it 🔐",
+    text: "Every single day I thank the universe for you. You are my luck, my calm, my home. En vazhkaiyoda azhagu nee tha dii. ❤️",
+  },
+  {
+    kicker: "Our little moment",
+    title: "Press play in your heart",
+    button: "Play the moment ▶️",
+    text: "Close your eyes for five seconds… that song, that rain, that laugh of yours. That moment is playing right now, and I am there with you. 🎬💫",
+  },
+  {
+    kicker: "Heart shower",
+    title: "All my love, all at once",
+    button: "Let it rain 💖",
+    text: "Every heart falling on this screen is one thing I love about you — and I ran out of screen, not reasons. 💕",
+    hearts: true,
+  },
+];
+
 export const surprise = {
   title: "I Have One More Surprise For You…",
   reveal:

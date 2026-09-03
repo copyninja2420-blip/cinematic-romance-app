@@ -58,7 +58,7 @@ export function Finale() {
               </div>
             )}
 
-            <p className="romantic mt-14 text-2xl text-gold-soft/80">
+            <p className="romantic name-shimmer mt-14 text-3xl">
               {couple.husbandName}
             </p>
           </>
