@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { letter } from "@/content/loveStory";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionTitle } from "./SectionTitle";
