@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { Finale } from "@/components/love/Finale";
 import { Gallery } from "@/components/love/Gallery";
+import { HeartTap } from "@/components/love/HeartTap";
 import { Hero } from "@/components/love/Hero";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
@@ -43,6 +44,7 @@ function LoveStoryPage() {
       {!opened && <Opening onOpen={() => setOpened(true)} />}
 
       <MusicToggle autoplay={opened} />
+      <HeartTap />
 
       {opened && (
         <>
