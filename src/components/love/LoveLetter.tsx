@@ -2,6 +2,7 @@ import { useState } from "react";
 import { letter } from "@/content/loveStory";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionTitle } from "./SectionTitle";
+import { MoreSurprises } from "./MoreSurprises";
 import { Typewriter } from "./Typewriter";
 
 type BurstHeart = { left: number; size: number; delay: number; duration: number };
@@ -67,9 +68,11 @@ export function LoveLetter() {
             <p className="mt-4 min-h-24 whitespace-pre-line font-serif text-[0.95rem] leading-relaxed text-ink/80">
               <Typewriter text={letter.body} speed={38} />
             </p>
-            <p className="script mt-6 text-right text-xl text-burgundy">{letter.signature}</p>
+            <p className="romantic name-shimmer mt-6 text-right text-3xl">{letter.signature}</p>
           </div>
         )}
+
+        {open && <MoreSurprises />}
       </div>
     </section>
   );

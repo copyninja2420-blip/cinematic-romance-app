@@ -396,7 +396,7 @@
   background:
     radial-gradient(circle at 50% 40%, oklch(0.24 0.1 16 / 80%), transparent 60%),
     oklch(0.1 0.03 20);
-  transition: opacity 1.4s ease, transform 1.4s ease, filter 1.4s ease;
+  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
 }
 
 @utility curtain-lift {
@@ -881,5 +881,100 @@
   100% {
     opacity: 0;
     transform: translateY(-70px) scale(0.8);
+  }
+}
+
+/* ── firework rocket + flash ── */
+@utility rocket {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 10px;
+  border-radius: 999px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: rocket-rise;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+@keyframes rocket-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, var(--rise), 0) scaleY(1);
+  }
+  6% {
+    opacity: 1;
+    transform: translate3d(0, calc(var(--rise) * 0.8), 0) scaleY(2.2);
+  }
+  24% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scaleY(1.6);
+  }
+  28%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scaleY(0.4);
+  }
+}
+
+@utility flash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 999px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: flash-pop;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+@keyframes flash-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  6% {
+    opacity: 0.9;
+    transform: scale(1.6);
+  }
+  22% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── shimmering signature name ── */
+@utility name-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--gold-soft) 0%,
+    oklch(0.86 0.13 22) 35%,
+    oklch(0.98 0.05 80) 50%,
+    oklch(0.86 0.13 22) 65%,
+    var(--gold-soft) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: name-sheen 5.5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 18px oklch(0.6 0.16 18 / 45%));
+}
+
+@keyframes name-sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }

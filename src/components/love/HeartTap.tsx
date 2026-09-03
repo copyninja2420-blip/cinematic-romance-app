@@ -15,7 +15,7 @@ export function HeartTap() {
         id: id++,
         x: e.clientX,
         y: e.clientY,
-        emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+        emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)] ?? "❤️",
       };
       setPops((p) => [...p.slice(-14), pop]);
       window.setTimeout(() => setPops((p) => p.filter((x) => x.id !== pop.id)), 1200);

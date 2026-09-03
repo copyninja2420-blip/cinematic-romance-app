@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { Finale } from "@/components/love/Finale";
 import { Gallery } from "@/components/love/Gallery";
+import { HeartTap } from "@/components/love/HeartTap";
 import { Hero } from "@/components/love/Hero";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
@@ -42,10 +43,12 @@ function LoveStoryPage() {
     <main className="relative min-h-[100svh] overflow-x-hidden bg-background">
       {!opened && <Opening onOpen={() => setOpened(true)} />}
 
+      <MusicToggle autoplay={opened} />
+      <HeartTap />
+
       {opened && (
         <>
           <Atmosphere particles={30} hearts={10} />
-          <MusicToggle autoplay />
           <div className="relative z-10 animate-fade-slow">
             <Hero />
             <Timeline />
@@ -60,7 +63,7 @@ function LoveStoryPage() {
             <footer className="pb-14 text-center">
               <p className="script text-lg text-gold-soft/80">
                 For{" "}
-                <span className="romantic text-2xl text-gradient-love">
+                <span className="romantic name-shimmer text-3xl">
                   {couple.wifeName}
                 </span>
                 , with all my heart ❤
