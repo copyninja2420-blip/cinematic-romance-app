@@ -22,7 +22,7 @@ export function Finale() {
         ) : (
           <>
             <p className="mt-8 whitespace-pre-line font-display text-[1.55rem] leading-snug tracking-wide text-warm text-glow">
-              <Typewriter text={finale.answer} speed={42} />
+              <Typewriter text={finale.answer} speed={30} onDone={handleDone} />
             </p>
 
             <p className="mt-12 whitespace-pre-line font-serif text-[1.05rem] leading-relaxed text-gradient-love">
@@ -58,9 +58,11 @@ export function Finale() {
               </div>
             )}
 
-            <p className="romantic name-shimmer mt-14 text-3xl">
-              {couple.husbandName}
-            </p>
+            {typed && (
+              <p className="romantic name-shimmer animate-rise mt-14 text-3xl">
+                {couple.husbandName}
+              </p>
+            )}
           </>
         )}
       </div>
