@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { couple, finale } from "@/content/loveStory";
 import { useReveal } from "@/hooks/useReveal";
 import { Typewriter } from "./Typewriter";
@@ -7,6 +7,8 @@ export function Finale() {
   const { ref, shown } = useReveal(0.4);
   const [chosen, setChosen] = useState(false);
   const [forever, setForever] = useState(false);
+  const [typed, setTyped] = useState(false);
+  const handleDone = useCallback(() => setTyped(true), []);
 
   return (
     <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-7 py-24 text-center">
