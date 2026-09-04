@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { couple, finale } from "@/content/loveStory";
 import { useReveal } from "@/hooks/useReveal";
+import { say, setMood, walkTo } from "@/lib/companion";
 import { Typewriter } from "./Typewriter";
 
 export function Finale() {
@@ -17,7 +18,11 @@ export function Finale() {
         <p className="script text-2xl text-gold-soft">{finale.question}</p>
 
         {!chosen ? (
-          <button type="button" onClick={() => setChosen(true)} className="btn-love mt-10">
+          <button type="button" onClick={() => {
+              setChosen(true);
+              walkTo(0.5, "walk");
+              window.setTimeout(() => setMood("present"), 1300);
+            }} className="btn-love mt-10">
             <span className="btn-love-glow" />
             <span className="relative">Reveal my answer ❤️</span>
           </button>
@@ -33,7 +38,11 @@ export function Finale() {
 
             <button
               type="button"
-              onClick={() => setForever(true)}
+              onClick={() => {
+                setForever(true);
+                setMood("present");
+                say("Forever with you.", 6000);
+              }}
               className={`btn-love mt-12 ${forever ? "btn-forever" : ""}`}
             >
               <span className="btn-love-glow" />
