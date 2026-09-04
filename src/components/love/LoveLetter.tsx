@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { letter } from "@/content/loveStory";
+import { say, setMood, walkTo } from "@/lib/companion";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionTitle } from "./SectionTitle";
 import { MoreSurprises } from "./MoreSurprises";
@@ -16,6 +17,11 @@ export function LoveLetter() {
 
   const openLetter = () => {
     setOpen(true);
+    walkTo(0.14, "walk");
+    window.setTimeout(() => {
+      setMood("read");
+      say("Read every word… I meant all of it ❤️", 5200);
+    }, 1200);
     setBurst(
       Array.from({ length: 26 }, () => ({
         left: Math.random() * 100,
