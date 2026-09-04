@@ -291,7 +291,7 @@ export default function CompanionScene() {
     <Canvas
       dpr={[1, 1.6]}
       gl={{ alpha: true, antialias: true, powerPreference: "low-power" }}
-      camera={{ position: [0, 0.15, 5.2], fov: 38 }}
+      camera={{ position: [0, 0.2, 4.4], fov: 38 }}
       style={{ pointerEvents: "none", background: "transparent" }}
     >
       <ambientLight intensity={0.85} />

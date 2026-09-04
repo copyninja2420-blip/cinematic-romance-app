@@ -106,7 +106,7 @@ export function Companion() {
         </div>
       )}
 
-      <div className="relative h-44 w-full">
+      <div className="relative h-52 w-full">
         <Suspense fallback={null}>
           <CompanionScene />
         </Suspense>
