@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Atmosphere } from "@/components/love/Atmosphere";
+import { Companion } from "@/components/love/Companion";
 import { Finale } from "@/components/love/Finale";
 import { Gallery } from "@/components/love/Gallery";
 import { HeartTap } from "@/components/love/HeartTap";
@@ -61,7 +62,7 @@ function LoveStoryPage() {
             <div className="flex flex-col items-center gap-5 pb-6">
               <ShareButton />
             </div>
-            <footer className="pb-14 text-center">
+            <footer className="pb-44 text-center">
               <p className="script text-lg text-gold-soft/80">
                 For{" "}
                 <span className="romantic name-shimmer text-3xl">
