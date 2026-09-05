@@ -24,13 +24,14 @@ function webglOk() {
 /** Scripted beats for the sections he travels through. */
 const SCENES: Record<string, { x: number; mood: Mood; line?: string }> = {
   hero: { x: 0.18, mood: "wave", line: "Happy Birthday, my love ❤️" },
-  timeline: { x: 0.12, mood: "walk", line: "Our story starts here…" },
-  gallery: { x: 0.8, mood: "jump", line: "Look at us 💕" },
+  timeline: { x: 0.12, mood: "point", line: "Our story starts here…" },
+  gallery: { x: 0.85, mood: "jump", line: "Look at us 💕" },
   letter: { x: 0.14, mood: "read", line: "Go on… open it 💌" },
-  surprise: { x: 0.85, mood: "heart", line: "Wait… there's something special ahead 👀" },
-  reasons: { x: 0.15, mood: "walk", line: "So many reasons…" },
+  surprise: { x: 0.88, mood: "peek", line: "There is another surprise ahead 👀" },
+  reasons: { x: 0.12, mood: "walk", line: "So many reasons…" },
   finale: { x: 0.5, mood: "present", line: "Happy Birthday, My Love ❤️" },
 };
+
 
 export function Companion() {
   const { x, message } = useCompanion();
