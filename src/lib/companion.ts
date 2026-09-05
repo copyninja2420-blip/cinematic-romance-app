@@ -3,12 +3,16 @@ import { useSyncExternalStore } from "react";
 export type Mood =
   | "wave"
   | "walk"
+  | "run"
   | "idle"
   | "sit"
   | "read"
   | "jump"
   | "kiss"
   | "heart"
+  | "point"
+  | "peek"
+  | "kneel"
   | "present";
 
 export type CompanionState = {
@@ -110,17 +114,17 @@ export function setPointer(x: number, y: number) {
 }
 
 export const romanticLines = [
-  "She is my favorite person ❤️",
-  "I have a surprise for you…",
-  "Keep exploring, my love 💕",
-  "You are loved more than you know.",
-  "Wait… there's something special ahead 👀",
+  "I made all of this just for you ❤️",
+  "Keep going, my love…",
+  "There is another surprise ahead 👀",
+  "You are my favorite person ❤️",
+  "I love you forever.",
   "Every day with you is my birthday 🎂",
-  "Psst… scroll a little more ✨",
+  "You are loved more than you know.",
 ];
 
 export function tapCompanion() {
   const line = romanticLines[Math.floor(Math.random() * romanticLines.length)]!;
   say(line);
-  setMood(Math.random() > 0.5 ? "kiss" : "jump", 2600);
+  setMood(Math.random() > 0.5 ? "kiss" : "wave", 2600);
 }

@@ -24,13 +24,14 @@ function webglOk() {
 /** Scripted beats for the sections he travels through. */
 const SCENES: Record<string, { x: number; mood: Mood; line?: string }> = {
   hero: { x: 0.18, mood: "wave", line: "Happy Birthday, my love ❤️" },
-  timeline: { x: 0.12, mood: "walk", line: "Our story starts here…" },
-  gallery: { x: 0.8, mood: "jump", line: "Look at us 💕" },
+  timeline: { x: 0.12, mood: "point", line: "Our story starts here…" },
+  gallery: { x: 0.85, mood: "jump", line: "Look at us 💕" },
   letter: { x: 0.14, mood: "read", line: "Go on… open it 💌" },
-  surprise: { x: 0.85, mood: "heart", line: "Wait… there's something special ahead 👀" },
-  reasons: { x: 0.15, mood: "walk", line: "So many reasons…" },
+  surprise: { x: 0.88, mood: "peek", line: "There is another surprise ahead 👀" },
+  reasons: { x: 0.12, mood: "walk", line: "So many reasons…" },
   finale: { x: 0.5, mood: "present", line: "Happy Birthday, My Love ❤️" },
 };
+
 
 export function Companion() {
   const { x, message } = useCompanion();
@@ -64,9 +65,15 @@ export function Companion() {
           const key = e.target.getAttribute("data-companion") ?? "";
           const scene = SCENES[key];
           if (!scene) continue;
-          walkTo(scene.x, "walk");
+          walkTo(scene.x, Math.abs(scene.x - getCompanion().x) > 0.4 ? "run" : "walk");
           window.setTimeout(() => setMood(scene.mood, scene.mood === "present" ? 0 : 5000), 1200);
           if (scene.line) say(scene.line, 4200);
+          if (scene.mood === "present") {
+            window.setTimeout(() => say("Forever with you.", 6000), 5200);
+          }
+          if (scene.mood === "peek") {
+            window.setTimeout(() => setMood("heart", 3000), 3000);
+          }
         }
       },
       { threshold: [0.45] },
@@ -82,11 +89,14 @@ export function Companion() {
       const s = getCompanion();
       if (s.mood === "present" || s.mood === "read") return;
       const roll = Math.random();
-      if (roll < 0.35) walkTo(0.12 + Math.random() * 0.76);
-      else if (roll < 0.55) setMood("kiss", 2400);
-      else if (roll < 0.72) setMood("heart", 3200);
-      else if (roll < 0.85) setMood("wave", 2200);
+      if (roll < 0.3) walkTo(0.12 + Math.random() * 0.76);
+      else if (roll < 0.4) walkTo(0.12 + Math.random() * 0.76, "run");
+      else if (roll < 0.56) setMood("kiss", 2400);
+      else if (roll < 0.7) setMood("heart", 3200);
+      else if (roll < 0.82) setMood("wave", 2200);
+      else if (roll < 0.92) setMood("point", 2400);
       else setMood("jump", 1400);
+
     }, 7000);
     return () => window.clearInterval(id);
   }, [enabled]);
