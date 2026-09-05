@@ -65,9 +65,15 @@ export function Companion() {
           const key = e.target.getAttribute("data-companion") ?? "";
           const scene = SCENES[key];
           if (!scene) continue;
-          walkTo(scene.x, "walk");
+          walkTo(scene.x, Math.abs(scene.x - getCompanion().x) > 0.4 ? "run" : "walk");
           window.setTimeout(() => setMood(scene.mood, scene.mood === "present" ? 0 : 5000), 1200);
           if (scene.line) say(scene.line, 4200);
+          if (scene.mood === "present") {
+            window.setTimeout(() => say("Forever with you.", 6000), 5200);
+          }
+          if (scene.mood === "peek") {
+            window.setTimeout(() => setMood("heart", 3000), 3000);
+          }
         }
       },
       { threshold: [0.45] },
@@ -83,11 +89,14 @@ export function Companion() {
       const s = getCompanion();
       if (s.mood === "present" || s.mood === "read") return;
       const roll = Math.random();
-      if (roll < 0.35) walkTo(0.12 + Math.random() * 0.76);
-      else if (roll < 0.55) setMood("kiss", 2400);
-      else if (roll < 0.72) setMood("heart", 3200);
-      else if (roll < 0.85) setMood("wave", 2200);
+      if (roll < 0.3) walkTo(0.12 + Math.random() * 0.76);
+      else if (roll < 0.4) walkTo(0.12 + Math.random() * 0.76, "run");
+      else if (roll < 0.56) setMood("kiss", 2400);
+      else if (roll < 0.7) setMood("heart", 3200);
+      else if (roll < 0.82) setMood("wave", 2200);
+      else if (roll < 0.92) setMood("point", 2400);
       else setMood("jump", 1400);
+
     }, 7000);
     return () => window.clearInterval(id);
   }, [enabled]);
