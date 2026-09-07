@@ -122,14 +122,16 @@ function Guy() {
   useEffect(() => {
     const first = Object.keys(actions).find((k) => k.includes("Idle")) ?? Object.keys(actions)[0];
     if (first) play(first);
-    return () => mixer.stopAllAction();
+    return () => {
+      mixer.stopAllAction();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actions]);
 
   const clipName = (mood: Mood, walking: boolean, running: boolean) => {
-    if (running) return CLIP.run!;
-    if (walking) return CLIP.walk!;
-    return CLIP[mood] ?? CLIP.idle!;
+    if (running) return CLIP['run']!;
+    if (walking) return CLIP['walk']!;
+    return CLIP[mood] ?? CLIP['idle']!;
   };
 
   useFrame((st, rawDelta) => {
