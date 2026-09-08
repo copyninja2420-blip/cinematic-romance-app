@@ -30,7 +30,7 @@ export function Hero() {
           <span className="romantic text-5xl leading-[1.1] text-gradient-love">{couple.wifeName} ❤️</span>
         </h1>
 
-        <p className="mx-auto mt-7 max-w-sm text-[0.98rem] leading-relaxed text-warm/70">
+        <p className="mx-auto mt-7 max-w-sm whitespace-pre-line text-[0.98rem] leading-relaxed text-warm/70">
           <Typewriter text={hero.line} speed={32} delay={700} />
         </p>
 
