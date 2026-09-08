@@ -978,3 +978,75 @@
     background-position: 100% 50%;
   }
 }
+
+/* ── Secret surprise: locked glowing heart + cinematic unlock ─────────── */
+@utility locked-heart {
+  display: inline-block;
+  font-size: 3.25rem;
+  line-height: 1;
+  color: color-mix(in oklab, var(--rose-glow, #ff7a9c) 70%, transparent);
+  filter: drop-shadow(0 0 18px rgba(255, 120, 150, 0.35));
+  animation: locked-pulse 3s ease-in-out infinite;
+  transition: filter 0.8s ease, color 0.8s ease, transform 0.8s ease;
+}
+
+@utility is-unlocking {
+  color: #ff7d9d;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 46px rgba(255, 130, 165, 0.9));
+}
+
+@keyframes locked-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@utility cinema-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0.93));
+  animation: cinema-fade 2.2s ease forwards;
+}
+
+@keyframes cinema-fade {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@utility cinema-core {
+  position: absolute;
+  font-size: 4rem;
+  color: #ff7d9d;
+  filter: drop-shadow(0 0 60px rgba(255, 130, 165, 0.9));
+  animation: cinema-core-grow 2.2s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+
+@keyframes cinema-core-grow {
+  0% { transform: scale(0.4); opacity: 0; }
+  45% { transform: scale(1); opacity: 1; }
+  70% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+@utility cinema-spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #ffd9e4;
+  opacity: 0;
+  transform: rotate(var(--a)) translateY(0);
+  animation: cinema-spark-out 0.9s ease-out forwards;
+}
+
+@keyframes cinema-spark-out {
+  0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(0.6); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-190px) scale(0.2); }
+}
