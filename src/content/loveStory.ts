@@ -48,7 +48,7 @@ export const opening = {
 
 export const hero = {
   title: "Happy Birthday, My Love ❤️",
-  line: "Today isn't just your birthday… it's the day the world became more beautiful because you were born.",
+  line: "Today isn't just your birthday...\nIt's the day someone incredibly special came into this world.",
 };
 
 export type StoryChapter = {

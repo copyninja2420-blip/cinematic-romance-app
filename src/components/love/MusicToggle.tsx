@@ -18,6 +18,7 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
   const [index, setIndex] = useState(0);
   const [userTracks, setUserTracks] = useState<UserTrack[]>([]);
   const [manage, setManage] = useState(false);
+  const [volume, setVolume] = useState(0.4);
 
   const toUserTrack = (t: StoredTrack): UserTrack => ({
     id: t.id,
@@ -45,12 +46,16 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
 
   useEffect(() => {
     if (!autoplay || !audioRef.current) return;
-    audioRef.current.volume = 0.4;
+    audioRef.current.volume = volume;
     audioRef.current
       .play()
       .then(() => setPlaying(true))
       .catch(() => setPlaying(false));
   }, [autoplay]);
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume]);
 
   useEffect(() => {
     const el = audioRef.current;
@@ -70,7 +75,7 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
       el.pause();
       setPlaying(false);
     } else {
-      el.volume = 0.4;
+      el.volume = volume;
       el.play()
         .then(() => setPlaying(true))
         .catch(() => setPlaying(false));
@@ -82,7 +87,7 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
     const el = audioRef.current;
     if (el && playing) {
       window.setTimeout(() => {
-        el.volume = 0.4;
+        el.volume = volume;
         el.play().catch(() => setPlaying(false));
       }, 0);
     }
@@ -169,6 +174,17 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
             <Plus className="size-4" />
           </Button>
         </div>
+
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.05}
+          value={volume}
+          aria-label="Music volume"
+          onChange={(e) => setVolume(Number(e.target.value))}
+          className="h-1 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-rose-300"
+        />
 
         {userTracks.length > 0 && (
           <>
