@@ -39,9 +39,12 @@ export const music = playlist[0] ?? { src: "", title: "" };
 
 
 export const opening = {
-  whisper: "I made something special for you…",
-  button: "Open Your Surprise ❤️",
+  greeting: "Hey, My Love... ❤️",
+  whisper: "I made something special for you.",
+  second: "Because you deserve more than just a birthday wish.",
+  button: "ENTER OUR STORY ❤️",
 };
+
 
 export const hero = {
   title: "Happy Birthday, My Love ❤️",
@@ -58,51 +61,65 @@ export type StoryChapter = {
 
 export const story: StoryChapter[] = [
   {
-    label: "The Day We Met",
+    label: "THE DAY WE MET",
     date: "[ ADD THE DATE ]",
     caption: "Where everything quietly began",
     body: "[ Write about the first time you saw her — the place, what she wore, what you thought in that very first second. ]",
     image: photoUs1.url,
   },
   {
-    label: "The Moment I Fell For You",
+    label: "THE MOMENT I FELL FOR YOU",
     date: "[ ADD THE DATE ]",
     caption: "The second my heart decided",
     body: "[ Describe the small ordinary moment when you knew she was the one. ]",
     image: photoUs4.url,
   },
   {
-    label: "Our Favorite Memories",
+    label: "OUR FIRST SPECIAL MEMORY",
     date: "[ ADD THE DATE ]",
-    caption: "The days we keep replaying",
-    body: "[ Our trips, our late-night talks, the songs, the rain, the silly fights and the sweeter making-ups. ]",
+    caption: "The first day that became ours",
+    body: "[ Write about your first date, first call, first everything. ]",
     image: photoUs5.url,
   },
   {
-    label: "The Moments I Never Want To Forget",
+    label: "THE MOMENTS THAT MADE US",
     date: "[ ADD THE DATE ]",
-    caption: "Held safely in my heart",
-    body: "[ The moments that made a home out of us — write them here exactly as you remember them. ]",
+    caption: "The days we keep replaying",
+    body: "[ Our trips, our late-night talks, the songs, the rain, the silly fights and the sweeter making-ups. ]",
     image: photoUs2.url,
   },
   {
-    label: "Forever Starts With Us",
+    label: "THE MEMORIES I WILL ALWAYS KEEP",
+    date: "[ ADD THE DATE ]",
+    caption: "Held safely in my heart",
+    body: "[ The moments that made a home out of us — write them here exactly as you remember them. ]",
+    image: photoUs3.url,
+  },
+  {
+    label: "OUR FUTURE",
     date: "Today & always",
     caption: "Every chapter after this one",
     body: "[ Write about the life you dream of building with her. ]",
-    image: photoUs3.url,
+    image: photoUs1.url,
   },
 ];
+
 
 export type Memory = { caption: string; note: string; image?: string };
 
 export const gallery: Memory[] = [
   { caption: "Your Smile ❤️", note: "[ add photo ]", image: photoUs1.url },
   { caption: "My Favorite Memory", note: "[ add photo ]", image: photoUs5.url },
-  { caption: "Us Together", note: "[ add photo ]", image: photoUs3.url },
+  { caption: "Just Us", note: "[ add photo ]", image: photoUs3.url },
   { caption: "The Moment I Knew", note: "[ add photo ]", image: photoUs4.url },
-  { caption: "Forever With You", note: "[ add photo ]", image: photoUs2.url },
+  { caption: "One Of My Happiest Days", note: "[ add photo ]", image: photoUs2.url },
+  {
+    caption: "Forever Doesn't Sound Long Enough.",
+    note: "[ add photo ]",
+    image: photoUs1.url,
+  },
 ];
+
 
 export const letter = {
   button: "Open My Letter 💌",
@@ -151,10 +168,12 @@ export const extraSurprises: ExtraSurprise[] = [
 ];
 
 export const surprise = {
-  title: "I Have One More Surprise For You…",
+  title: "WAIT…\nTHERE'S ONE MORE THING.",
+  button: "UNLOCK THE SURPRISE ❤️",
   reveal:
     "You are my favorite person, my safest place, my happiest memory, and the person I want beside me for every chapter of my life. ❤️",
 };
+
 
 /** 10–20 reasons. Add, remove or rewrite freely. */
 export const reasons: string[] = [
@@ -177,8 +196,16 @@ export const reasons: string[] = [
 
 export const finale = {
   question: "If I could choose again…",
-  answer:
-    "I would still choose you.\nToday. Tomorrow. And every lifetime after this. ❤️",
-  closing: "Happy Birthday, My Wife.\nI Love You More Than Words Can Say. ❤️",
+  answer: "I would still choose you.",
+  beats: ["Today.", "Tomorrow.", "And every lifetime after this."],
+  closing: "HAPPY BIRTHDAY, MY LOVE ❤️\nI LOVE YOU MORE THAN WORDS CAN EVER SAY.",
   button: "Forever & Always",
 };
+
+/** Hidden reveal: tap the glowing heart three times. */
+export const secret = {
+  found: "Okay… you found my secret. ❤️",
+  message:
+    "[ WRITE MY SECRET MESSAGE HERE — the one thing only she should ever read. ]",
+};
+
