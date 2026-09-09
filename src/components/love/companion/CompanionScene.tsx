@@ -250,7 +250,7 @@ export default function CompanionScene() {
     <Canvas
       dpr={[1, 1.7]}
       shadows
-      gl={{ alpha: true, antialias: true, powerPreference: "low-power" }}
+      gl={{ alpha: true, antialias: true, powerPreference: "low-power", preserveDrawingBuffer: true }}
       camera={{ position: [0, 0.35, 4.2], fov: 38 }}
       style={{ pointerEvents: "none", background: "transparent" }}
     >
