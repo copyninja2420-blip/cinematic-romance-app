@@ -263,6 +263,7 @@ export default function CompanionScene() {
         <Lightformer intensity={0.8} color="#ffd6e6" position={[-4, 1, 2]} rotation-y={Math.PI / 2} scale={[10, 3, 1]} />
       </Environment>
       <ContactShadows position={[0, -0.95, 0]} opacity={0.35} scale={6} blur={2.6} far={2} />
+      <mesh position={[0,0,0]}><boxGeometry args={[1,1,1]} /><meshBasicMaterial color="#ff0000" /></mesh>
       <Guy />
     </Canvas>
   );
