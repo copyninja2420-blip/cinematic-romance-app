@@ -221,6 +221,12 @@ function Guy() {
       heart.current.visible = k > 0.01;
       heart.current.position.y = 1.3 + Math.sin(t * 2.2) * 0.07;
     }
+    if (bones.head) {
+      (window as unknown as Record<string, unknown>)["__head"] = bones.head
+        .getWorldPosition(new THREE.Vector3())
+        .toArray()
+        .concat(st.camera.position.toArray());
+    }
     if (bigHeart.current) {
       bigHeart.current.scale.setScalar((mood === "present" ? 2 : 1) * (1 + Math.sin(t * 3) * 0.07));
       bigHeart.current.rotation.y = Math.sin(t * 1.2) * 0.4;
