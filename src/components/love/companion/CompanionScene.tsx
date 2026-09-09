@@ -97,13 +97,28 @@ function Guy() {
       mat.metalness = 0;
       mat.needsUpdate = true;
     }
+    const dbg: unknown[] = [];
     cloned.traverse((o) => {
       const m = o as THREE.Mesh;
       if (m.isMesh) {
         m.castShadow = true;
         m.frustumCulled = false;
+        dbg.push({
+          n: m.name,
+          t: m.type,
+          vis: m.visible,
+          count: (m.geometry as THREE.BufferGeometry).attributes["position"]?.count,
+          ws: m.getWorldScale(new THREE.Vector3()).toArray(),
+          mat: (Array.isArray(m.material) ? m.material : [m.material]).map((x) => ({
+            name: (x as THREE.MeshStandardMaterial).name,
+            op: (x as THREE.MeshStandardMaterial).opacity,
+            tr: (x as THREE.MeshStandardMaterial).transparent,
+            vis: (x as THREE.MeshStandardMaterial).visible,
+          })),
+        });
       }
     });
+    (window as unknown as Record<string, unknown>)["__meshes"] = dbg;
   }, [materials, cloned]);
 
   const bones = useMemo(
