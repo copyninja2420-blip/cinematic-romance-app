@@ -47,9 +47,21 @@ function heartShape() {
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const HEART = "#ff5d84";
 
+const TARGET_HEIGHT = 1.9;
+
 function Guy() {
   const { scene, animations } = useGLTF(MODEL);
   const cloned = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+
+  /** the source rig is authored at 100x — normalise him to a human size on screen */
+  const fit = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(cloned);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const h = size.y || 1;
+    const s = TARGET_HEIGHT / h;
+    return { scale: s, y: -box.min.y * s };
+  }, [cloned]);
   const { nodes, materials } = useGraph(cloned) as unknown as {
     nodes: Record<string, THREE.Object3D>;
     materials: Record<string, THREE.MeshStandardMaterial>;
