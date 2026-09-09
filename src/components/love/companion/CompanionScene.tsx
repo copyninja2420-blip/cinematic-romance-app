@@ -221,6 +221,10 @@ function Guy() {
       heart.current.visible = k > 0.01;
       heart.current.position.y = 1.3 + Math.sin(t * 2.2) * 0.07;
     }
+    if (root.current) {
+      const bb = new THREE.Box3().setFromObject(root.current);
+      (window as unknown as Record<string, unknown>)["__bb"] = bb.min.toArray().concat(bb.max.toArray());
+    }
     if (bigHeart.current) {
       bigHeart.current.scale.setScalar((mood === "present" ? 2 : 1) * (1 + Math.sin(t * 3) * 0.07));
       bigHeart.current.rotation.y = Math.sin(t * 1.2) * 0.4;
