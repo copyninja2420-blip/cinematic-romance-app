@@ -60,7 +60,6 @@ function Guy() {
     box.getSize(size);
     const h = size.y || 1;
     const s = TARGET_HEIGHT / h;
-    (window as unknown as Record<string, unknown>)["__fit"] = { s, box: box.min.toArray().concat(box.max.toArray()) };
     return { scale: s, y: -box.min.y * s };
   }, [cloned]);
   const { nodes, materials } = useGraph(cloned) as unknown as {
