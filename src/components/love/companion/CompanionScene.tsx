@@ -229,7 +229,7 @@ function Guy() {
 
   return (
     <group ref={root} position={[0, -0.95, 0]}>
-      <group ref={rig} scale={1.05}>
+      <group ref={rig} scale={fit.scale} position={[0, fit.y, 0]}>
         <primitive object={cloned} />
       </group>
 
