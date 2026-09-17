@@ -1,6 +1,6 @@
 import { useState, ReactNode } from "react";
 
-const CORRECT_PASSWORD = "yourpasswordhere"; // change this
+const CORRECT_PASSWORD = "06062024"; // change this
 
 export default function PasswordGate({ children }: { children: ReactNode }) {
   const [input, setInput] = useState("");
