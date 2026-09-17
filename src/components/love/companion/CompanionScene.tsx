@@ -1,34 +1,54 @@
-import { Canvas, useFrame, useGraph, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer, useAnimations, useGLTF } from "@react-three/drei";
 import { useEffect, useMemo, useRef } from "react";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
+import {
+  ContactShadows,
+  Environment,
+  Float,
+  Lightformer,
+  useAnimations,
+  useGLTF,
+} from "@react-three/drei";
 import * as THREE from "three";
 import { SkeletonUtils } from "three-stdlib";
-import { getCompanion, reportX, type Mood } from "@/lib/companion";
+
+import {
+  getCompanion,
+  reportX,
+  type Mood,
+} from "@/lib/companion";
 
 const MODEL = "/models/companion.glb";
 
-/** reference palette — warm skin, dark-brown swept hair, light-blue shirt */
-const PALETTE: Record<string, { color: string; roughness?: number }> = {
-  Skin: { color: "#f0bd94", roughness: 0.62 },
-  Shirt: { color: "#b7d8f4", roughness: 0.72 },
-  Shirt2: { color: "#9cc6ea", roughness: 0.72 },
-  Hair: { color: "#43291a", roughness: 0.55 },
-  Hair2: { color: "#5a3a24", roughness: 0.55 },
-  Pants: { color: "#2f3a52", roughness: 0.85 },
-  Shoes: { color: "#1b1b23", roughness: 0.45 },
-  Socks: { color: "#efe7dd", roughness: 0.9 },
-  Eyes: { color: "#3b2418", roughness: 0.2 },
-};
+const HEART = "#ff5d84";
+const HEART_GLOW = "#ff8eaa";
+
+const TARGET_HEIGHT = 1.9;
+
+/* -------------------------------------------------------
+   Animation mapping
+
+   The important part is that your existing GLB animations
+   are still used. If an animation doesn't exist, the code
+   safely falls back to another available animation.
+------------------------------------------------------- */
 
 const CLIP: Record<string, string> = {
   idle: "Man_Idle",
   walk: "Man_Walk",
   run: "Man_Run",
+
   jump: "Man_Jump",
+
+  // Your current GLB appears to use sitting for these.
   sit: "Man_Sitting",
   read: "Man_Sitting",
   kneel: "Man_Sitting",
   present: "Man_Sitting",
+
   wave: "Man_Idle",
   kiss: "Man_Idle",
   heart: "Man_Idle",
@@ -36,235 +56,922 @@ const CLIP: Record<string, string> = {
   peek: "Man_Idle",
 };
 
-function heartShape() {
-  const s = new THREE.Shape();
-  s.moveTo(0, -0.5);
-  s.bezierCurveTo(0.6, 0.15, 0.45, 0.75, 0, 0.42);
-  s.bezierCurveTo(-0.45, 0.75, -0.6, 0.15, 0, -0.5);
-  return s;
+/* -------------------------------------------------------
+   Heart geometry
+------------------------------------------------------- */
+
+function createHeartShape() {
+  const shape = new THREE.Shape();
+
+  shape.moveTo(0, -0.35);
+
+  shape.bezierCurveTo(
+    -0.65,
+    -0.85,
+    -1.05,
+    -0.15,
+    -0.7,
+    0.35
+  );
+
+  shape.bezierCurveTo(
+    -0.4,
+    0.75,
+    0,
+    0.95,
+    0,
+    0.95
+  );
+
+  shape.bezierCurveTo(
+    0,
+    0.95,
+    0.4,
+    0.75,
+    0.7,
+    0.35
+  );
+
+  shape.bezierCurveTo(
+    1.05,
+    -0.15,
+    0.65,
+    -0.85,
+    0,
+    -0.35
+  );
+
+  return shape;
 }
 
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const HEART = "#ff5d84";
+/* -------------------------------------------------------
+   Floating decorative heart
+------------------------------------------------------- */
 
-const TARGET_HEIGHT = 1.9;
+function FloatingHeart({
+  position,
+  scale = 0.08,
+  speed = 1,
+}: {
+  position: [number, number, number];
+  scale?: number;
+  speed?: number;
+}) {
+  const ref = useRef<THREE.Mesh>(null);
+
+  const geometry = useMemo(
+    () =>
+      new THREE.ExtrudeGeometry(createHeartShape(), {
+        depth: 0.08,
+        bevelEnabled: true,
+        bevelSegments: 2,
+        bevelSize: 0.025,
+        bevelThickness: 0.025,
+      }),
+    []
+  );
+
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+
+    const t = clock.elapsedTime * speed;
+
+    ref.current.rotation.y = Math.sin(t * 0.8) * 0.25;
+    ref.current.rotation.z = Math.sin(t * 0.6) * 0.08;
+
+    ref.current.position.y =
+      position[1] + Math.sin(t) * 0.06;
+  });
+
+  return (
+    <mesh
+      ref={ref}
+      geometry={geometry}
+      position={position}
+      scale={scale}
+    >
+      <meshStandardMaterial
+        color={HEART}
+        emissive={HEART}
+        emissiveIntensity={1.8}
+        roughness={0.3}
+        metalness={0.05}
+      />
+    </mesh>
+  );
+}
+
+/* -------------------------------------------------------
+   Main 3D character
+------------------------------------------------------- */
 
 function Guy() {
-  const { scene, animations } = useGLTF(MODEL);
-  const cloned = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const gltf = useGLTF(MODEL);
 
-  /** the source rig is authored at 100x — normalise him to a human size on screen */
-  const fit = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(cloned);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    const h = size.y || 1;
-    const s = TARGET_HEIGHT / h;
-    return { scale: s, y: -box.min.y * s };
-  }, [cloned]);
-  const { nodes, materials } = useGraph(cloned) as unknown as {
-    nodes: Record<string, THREE.Object3D>;
-    materials: Record<string, THREE.MeshStandardMaterial>;
-  };
+  const cloned = useMemo(
+    () => SkeletonUtils.clone(gltf.scene),
+    [gltf.scene]
+  );
 
   const rig = useRef<THREE.Group>(null);
   const root = useRef<THREE.Group>(null);
+
   const heart = useRef<THREE.Group>(null);
   const bigHeart = useRef<THREE.Mesh>(null);
-  const { actions, mixer } = useAnimations(animations, rig);
+
+  const { actions, mixer } = useAnimations(
+    gltf.animations,
+    rig
+  );
+
   const { viewport } = useThree();
 
-  const heartGeo = useMemo(
-    () =>
-      new THREE.ExtrudeGeometry(heartShape(), {
-        depth: 0.12,
-        bevelEnabled: true,
-        bevelSize: 0.05,
-        bevelThickness: 0.05,
-        bevelSegments: 2,
-        curveSegments: 12,
-      }),
-    [],
-  );
+  /* -----------------------------------------------------
+     Find correct character height and scale
+  ----------------------------------------------------- */
 
-  /* restyle the model to match the reference look */
-  useEffect(() => {
-    for (const [name, mat] of Object.entries(materials)) {
-      const p = PALETTE[name];
-      if (!p) continue;
-      mat.color = new THREE.Color(p.color);
-      mat.roughness = p.roughness ?? 0.7;
-      mat.metalness = 0;
-      mat.needsUpdate = true;
-    }
-    cloned.traverse((o) => {
-      const m = o as THREE.Mesh;
-      if (m.isMesh) {
-        m.castShadow = true;
-        m.frustumCulled = false;
+  const fit = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(cloned);
+
+    const size = new THREE.Vector3();
+    box.getSize(size);
+
+    const height = Math.max(size.y, 0.001);
+
+    return {
+      scale: TARGET_HEIGHT / height,
+      height,
+    };
+  }, [cloned]);
+
+  /* -----------------------------------------------------
+     Character state
+  ----------------------------------------------------- */
+
+  const state = useRef({
+    x: 0.18,
+    facing: 1,
+    animation: "",
+    lastMood: "",
+  });
+
+  /* -----------------------------------------------------
+     Character bones
+  ----------------------------------------------------- */
+
+  const bones = useMemo(() => {
+    const result: {
+      head?: THREE.Bone;
+      neck?: THREE.Bone;
+
+      armR?: THREE.Bone;
+      foreR?: THREE.Bone;
+
+      armL?: THREE.Bone;
+      foreL?: THREE.Bone;
+    } = {};
+
+    cloned.traverse((obj) => {
+      if (!(obj as THREE.Bone).isBone) return;
+
+      const bone = obj as THREE.Bone;
+
+      const name = bone.name.toLowerCase();
+
+      if (name === "head") result.head = bone;
+
+      if (name === "neck") result.neck = bone;
+
+      if (
+        name.includes("upperarm.r") ||
+        name.includes("upper_arm.r")
+      ) {
+        result.armR = bone;
+      }
+
+      if (
+        name.includes("lowerarm.r") ||
+        name.includes("lower_arm.r")
+      ) {
+        result.foreR = bone;
+      }
+
+      if (
+        name.includes("upperarm.l") ||
+        name.includes("upper_arm.l")
+      ) {
+        result.armL = bone;
+      }
+
+      if (
+        name.includes("lowerarm.l") ||
+        name.includes("lower_arm.l")
+      ) {
+        result.foreL = bone;
       }
     });
-  }, [materials, cloned]);
 
-  const bones = useMemo(
-    () => ({
-      head: nodes["Head"] as THREE.Bone | undefined,
-      neck: nodes["Neck"] as THREE.Bone | undefined,
-      armR: nodes["UpperArm.R"] as THREE.Bone | undefined,
-      foreR: nodes["LowerArm.R"] as THREE.Bone | undefined,
-      armL: nodes["UpperArm.L"] as THREE.Bone | undefined,
-      foreL: nodes["LowerArm.L"] as THREE.Bone | undefined,
-    }),
-    [nodes],
-  );
+    return result;
+  }, [cloned]);
 
-  const cur = useRef({ x: 0.18, facing: 1, clip: "" });
+  /* -----------------------------------------------------
+     Character materials
 
-  /* crossfade clips as his mood changes */
-  const play = (name: string) => {
-    if (cur.current.clip === name) return;
-    const next = actions[name];
-    if (!next) return;
-    const prev = actions[cur.current.clip];
-    next.reset().setEffectiveWeight(1).fadeIn(0.35).play();
-    prev?.fadeOut(0.35);
-    cur.current.clip = name;
-  };
+     We do not replace the model. We only slightly enhance
+     existing materials.
+  ----------------------------------------------------- */
 
   useEffect(() => {
-    const first = Object.keys(actions).find((k) => k.includes("Idle")) ?? Object.keys(actions)[0];
-    if (first) play(first);
+    cloned.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+
+      if (!mesh.isMesh) return;
+
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+
+      const material = mesh.material;
+
+      if (Array.isArray(material)) {
+        material.forEach((mat) => {
+          if ("roughness" in mat) {
+            mat.roughness = Math.min(
+              0.8,
+              Number(mat.roughness)
+            );
+          }
+
+          if ("metalness" in mat) {
+            mat.metalness = Math.min(
+              0.25,
+              Number(mat.metalness)
+            );
+          }
+        });
+      } else if (material) {
+        if ("roughness" in material) {
+          material.roughness = Math.min(
+            0.8,
+            Number(material.roughness)
+          );
+        }
+
+        if ("metalness" in material) {
+          material.metalness = Math.min(
+            0.25,
+            Number(material.metalness)
+          );
+        }
+      }
+    });
+  }, [cloned]);
+
+  /* -----------------------------------------------------
+     Create heart
+  ----------------------------------------------------- */
+
+  const heartGeometry = useMemo(
+    () =>
+      new THREE.ExtrudeGeometry(createHeartShape(), {
+        depth: 0.12,
+        bevelEnabled: true,
+        bevelSegments: 3,
+        bevelSize: 0.04,
+        bevelThickness: 0.04,
+      }),
+    []
+  );
+
+  /* -----------------------------------------------------
+     Animation controller
+
+     IMPORTANT:
+     Animation is changed only when required.
+     It is NOT searched every frame.
+  ----------------------------------------------------- */
+
+  const play = (name: string) => {
+    if (!actions) return;
+
+    if (state.current.animation === name) {
+      return;
+    }
+
+    const next = actions[name];
+
+    if (!next) return;
+
+    const previous =
+      actions[state.current.animation];
+
+    next.reset();
+    next.setEffectiveWeight(1);
+    next.setEffectiveTimeScale(1);
+    next.fadeIn(0.4);
+    next.play();
+
+    if (previous && previous !== next) {
+      previous.fadeOut(0.4);
+    }
+
+    state.current.animation = name;
+  };
+
+  /* -----------------------------------------------------
+     Start idle animation
+  ----------------------------------------------------- */
+
+  useEffect(() => {
+    if (!actions) return;
+
+    const available = Object.keys(actions);
+
+    const idle =
+      available.find(
+        (name) =>
+          name.toLowerCase() ===
+          CLIP.idle.toLowerCase()
+      ) ??
+      available.find((name) =>
+        name.toLowerCase().includes("idle")
+      ) ??
+      available[0];
+
+    if (idle) {
+      play(idle);
+    }
+
     return () => {
       mixer.stopAllAction();
     };
+
+    // Animation system intentionally initialized once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actions]);
 
-  const clipName = (mood: Mood, walking: boolean, running: boolean) => {
-    if (running) return CLIP['run']!;
-    if (walking) return CLIP['walk']!;
-    return CLIP[mood] ?? CLIP['idle']!;
+  /* -----------------------------------------------------
+     Choose animation
+  ----------------------------------------------------- */
+
+  const chooseAnimation = (
+    mood: string,
+    walking: boolean,
+    running: boolean
+  ) => {
+    if (!actions) return;
+
+    let wanted = CLIP.idle;
+
+    if (running) {
+      wanted = CLIP.run;
+    } else if (walking) {
+      wanted = CLIP.walk;
+    } else if (CLIP[mood]) {
+      wanted = CLIP[mood];
+    }
+
+    /* Find exact animation first */
+    let found = Object.keys(actions).find(
+      (key) =>
+        key.toLowerCase() === wanted.toLowerCase()
+    );
+
+    /* Then partial match */
+    if (!found) {
+      found = Object.keys(actions).find((key) =>
+        key
+          .toLowerCase()
+          .includes(wanted.toLowerCase().replace("man_", ""))
+      );
+    }
+
+    /* Final fallback */
+    if (!found) {
+      found = Object.keys(actions).find((key) =>
+        key.toLowerCase().includes("idle")
+      );
+    }
+
+    if (found) {
+      play(found);
+    }
   };
+
+  /* -----------------------------------------------------
+     Gesture helper
+  ----------------------------------------------------- */
+
+  const gesture = (
+    arm?: THREE.Bone,
+    fore?: THREE.Bone,
+    x = 0,
+    y = 0,
+    z = 0
+  ) => {
+    if (arm) {
+      arm.rotation.x = THREE.MathUtils.lerp(
+        arm.rotation.x,
+        x,
+        0.12
+      );
+
+      arm.rotation.y = THREE.MathUtils.lerp(
+        arm.rotation.y,
+        y,
+        0.12
+      );
+
+      arm.rotation.z = THREE.MathUtils.lerp(
+        arm.rotation.z,
+        z,
+        0.12
+      );
+    }
+
+    if (fore) {
+      fore.rotation.z = THREE.MathUtils.lerp(
+        fore.rotation.z,
+        z * 0.55,
+        0.12
+      );
+    }
+  };
+
+  /* -----------------------------------------------------
+     Main animation loop
+  ----------------------------------------------------- */
 
   useFrame((st, rawDelta) => {
     const dt = Math.min(rawDelta, 0.05);
     const t = st.clock.elapsedTime;
-    const s = getCompanion();
-    const mood = s.mood;
-    const c = cur.current;
 
-    const grounded = mood === "sit" || mood === "read" || mood === "present" || mood === "kneel";
+    const companion = getCompanion();
 
-    /* ── travel along the bottom of the screen ── */
-    const dx = s.targetX - c.x;
+    const mood = String(companion.mood);
+
+    const current = state.current;
+
+    /* -----------------------------------------------
+       Target movement
+    ------------------------------------------------ */
+
+    const dx = companion.targetX - current.x;
+
     const running = mood === "run";
-    const walking = Math.abs(dx) > 0.012 && !grounded;
+
+    const grounded =
+      mood === "sit" ||
+      mood === "read" ||
+      mood === "kneel";
+
+    const walking =
+      Math.abs(dx) > 0.012 &&
+      !grounded;
+
     if (walking) {
-      const speed = running ? 0.4 : 0.17;
-      c.x += Math.sign(dx) * Math.min(Math.abs(dx), speed * dt);
-      c.facing = Math.sign(dx);
+      const speed = running
+        ? 0.42
+        : 0.20;
+
+      current.x +=
+        Math.sign(dx) *
+        Math.min(Math.abs(dx), speed * dt);
+
+      current.facing =
+        Math.sign(dx) || current.facing;
     }
-    reportX(c.x);
 
-    const nameOfClip = Object.keys(actions).find((k) => k.endsWith(clipName(mood, walking, running)));
-    if (nameOfClip) play(nameOfClip);
+    reportX(current.x);
 
-    const halfW = viewport.width / 2;
+    /* -----------------------------------------------
+       Change animation only when mood/walking state
+       changes.
+    ------------------------------------------------ */
+
+    const animationState =
+      `${mood}-${walking}-${running}`;
+
+    if (current.lastMood !== animationState) {
+      chooseAnimation(
+        mood,
+        walking,
+        running
+      );
+
+      current.lastMood = animationState;
+    }
+
+    /* -----------------------------------------------
+       Smooth horizontal movement
+    ------------------------------------------------ */
+
     if (root.current) {
-      root.current.position.x = lerp(
-        root.current.position.x,
-        (c.x - 0.5) * viewport.width,
-        1 - Math.exp(-8 * dt),
-      );
-      root.current.position.x = THREE.MathUtils.clamp(root.current.position.x, -halfW + 0.5, halfW - 0.5);
+      const targetX =
+        (current.x - 0.5) *
+        viewport.width;
 
-      const faceTarget = walking ? c.facing * 1.15 : (s.pointer.x - 0.5) * 0.9;
-      root.current.rotation.y = lerp(root.current.rotation.y, faceTarget, 1 - Math.exp(-5 * dt));
-      root.current.position.y = -0.95 + (mood === "peek" ? -0.55 : 0);
+      root.current.position.x =
+        THREE.MathUtils.damp(
+          root.current.position.x,
+          targetX,
+          8,
+          dt
+        );
+
+      root.current.position.x =
+        THREE.MathUtils.clamp(
+          root.current.position.x,
+          -viewport.width * 0.48,
+          viewport.width * 0.48
+        );
+
+      /* ---------------------------------------------
+         Face movement direction
+      --------------------------------------------- */
+
+      const faceTarget =
+        walking
+          ? current.facing * 1.15
+          : THREE.MathUtils.clamp(
+              (companion.pointer?.x ?? 0.5) - 0.5,
+              -0.8,
+              0.8
+            );
+
+      root.current.rotation.y =
+        THREE.MathUtils.damp(
+          root.current.rotation.y,
+          faceTarget,
+          5,
+          dt
+        );
+
+      /* ---------------------------------------------
+         Vertical position
+      --------------------------------------------- */
+
+      const targetY =
+        grounded
+          ? -0.95
+          : -0.95 +
+            Math.sin(t * 2) *
+              0.008;
+
+      root.current.position.y =
+        THREE.MathUtils.damp(
+          root.current.position.y,
+          targetY,
+          6,
+          dt
+        );
     }
 
-    /* ── head follows the cursor / touch ── */
+    /* -----------------------------------------------
+       Natural breathing
+    ------------------------------------------------ */
+
+    if (rig.current) {
+      const breathing =
+        Math.sin(t * 1.8) * 0.012;
+
+      rig.current.scale.y =
+        fit.scale *
+        (1 + breathing);
+
+      rig.current.scale.x =
+        fit.scale *
+        (1 - breathing * 0.35);
+
+      rig.current.scale.z =
+        fit.scale *
+        (1 - breathing * 0.35);
+    }
+
+    /* -----------------------------------------------
+       Head follows pointer/touch
+    ------------------------------------------------ */
+
     if (bones.head) {
-      bones.head.rotation.y = lerp(bones.head.rotation.y, (s.pointer.x - 0.5) * 0.6, 1 - Math.exp(-5 * dt));
-      bones.head.rotation.x = lerp(
-        bones.head.rotation.x,
-        (s.pointer.y - 0.4) * 0.3 + (mood === "read" ? 0.3 : 0),
-        1 - Math.exp(-5 * dt),
-      );
+      const px =
+        companion.pointer?.x ?? 0.5;
+
+      const py =
+        companion.pointer?.y ?? 0.45;
+
+      const targetY =
+        (px - 0.5) * 0.65;
+
+      const targetX =
+        -(py - 0.45) * 0.4;
+
+      bones.head.rotation.y =
+        THREE.MathUtils.damp(
+          bones.head.rotation.y,
+          targetY,
+          5,
+          dt
+        );
+
+      bones.head.rotation.x =
+        THREE.MathUtils.damp(
+          bones.head.rotation.x,
+          targetX,
+          5,
+          dt
+        );
     }
 
-    /* ── gesture overlays on top of the baked animation ── */
-    const gesture = (arm?: THREE.Bone, fore?: THREE.Bone, z = 0, x = 0, foreZ = 0) => {
-      if (arm) {
-        arm.rotation.z = lerp(arm.rotation.z, z, 1 - Math.exp(-9 * dt));
-        arm.rotation.x = lerp(arm.rotation.x, x, 1 - Math.exp(-9 * dt));
-      }
-      if (fore) fore.rotation.z = lerp(fore.rotation.z, foreZ, 1 - Math.exp(-9 * dt));
-    };
+    /* -----------------------------------------------
+       Reset / gesture layer
+    ------------------------------------------------ */
 
     if (mood === "wave") {
-      gesture(bones.armR, bones.foreR, -2.2, 0, -0.5 + Math.sin(t * 9) * 0.5);
+      const wave =
+        Math.sin(t * 5) * 0.28;
+
+      gesture(
+        bones.armR,
+        bones.foreR,
+        -2.0,
+        0,
+        -0.55 + wave
+      );
     } else if (mood === "point") {
-      gesture(bones.armR, bones.foreR, -1.2, -0.3, 0.1);
+      gesture(
+        bones.armR,
+        bones.foreR,
+        -1.2,
+        -0.25,
+        0.12
+      );
     } else if (mood === "kiss") {
-      gesture(bones.armR, bones.foreR, -1.5 - Math.abs(Math.sin(t * 2.5)) * 0.7, -0.4, -0.6);
-    } else if (mood === "heart" || mood === "present" || mood === "peek") {
-      gesture(bones.armR, bones.foreR, -0.9, -0.7, -0.9);
-      gesture(bones.armL, bones.foreL, 0.9, -0.7, 0.9);
+      gesture(
+        bones.armR,
+        bones.foreR,
+        -1.45,
+        -0.25,
+        0.1
+      );
+    } else if (
+      mood === "heart" ||
+      mood === "present"
+    ) {
+      gesture(
+        bones.armR,
+        bones.foreR,
+        -0.9,
+        -0.7,
+        -0.9
+      );
+
+      gesture(
+        bones.armL,
+        bones.foreL,
+        0.9,
+        -0.7,
+        0.9
+      );
     }
 
-    /* ── the glowing heart he carries ── */
-    const showHeart = mood === "heart" || mood === "present" || mood === "kiss" || mood === "peek";
+    /* -----------------------------------------------
+       Small idle body movement
+    ------------------------------------------------ */
+
+    if (
+      rig.current &&
+      !walking &&
+      !grounded
+    ) {
+      rig.current.rotation.z =
+        Math.sin(t * 1.1) *
+        0.008;
+
+      rig.current.rotation.y =
+        Math.sin(t * 0.7) *
+        0.012;
+    }
+
+    /* -----------------------------------------------
+       Main glowing heart
+    ------------------------------------------------ */
+
+    const showHeart =
+      mood === "heart" ||
+      mood === "present";
+
     if (heart.current) {
-      const k = lerp(heart.current.scale.x, showHeart ? 1 : 0, 1 - Math.exp(-7 * dt));
-      heart.current.scale.setScalar(Math.max(0.001, k));
-      heart.current.visible = k > 0.01;
-      heart.current.position.y = 1.3 + Math.sin(t * 2.2) * 0.07;
+      const targetScale =
+        showHeart ? 1 : 0;
+
+      const currentScale =
+        heart.current.scale.x;
+
+      const nextScale =
+        THREE.MathUtils.damp(
+          currentScale,
+          targetScale,
+          8,
+          dt
+        );
+
+      heart.current.scale.setScalar(
+        Math.max(0.001, nextScale)
+      );
+
+      heart.current.visible =
+        nextScale > 0.01;
+
+      heart.current.position.y =
+        1.3 +
+        Math.sin(t * 2.2) *
+          0.045;
+
+      heart.current.rotation.z =
+        Math.sin(t * 1.3) *
+        0.05;
     }
+
+    /* -----------------------------------------------
+       Big heart pulse
+    ------------------------------------------------ */
+
     if (bigHeart.current) {
-      bigHeart.current.scale.setScalar((mood === "present" ? 2 : 1) * (1 + Math.sin(t * 3) * 0.07));
-      bigHeart.current.rotation.y = Math.sin(t * 1.2) * 0.4;
+      const pulse =
+        1 +
+        Math.sin(t * 4) *
+          (showHeart ? 0.08 : 0.015);
+
+      bigHeart.current.scale.set(
+        pulse,
+        pulse,
+        pulse
+      );
+
+      bigHeart.current.rotation.y =
+        Math.sin(t * 1.2) *
+        0.15;
     }
-  }, 1);
+  });
 
   return (
-    <group ref={root} position={[0, -0.95, 0]}>
-      <group ref={rig} scale={fit.scale} position={[0, fit.y, 0]}>
+    <group
+      ref={root}
+      position={[0, -0.95, 0]}
+    >
+      {/* Character */}
+      <group
+        ref={rig}
+        scale={fit.scale}
+        position={[0, 0, 0]}
+      >
         <primitive object={cloned} />
       </group>
 
-      <group ref={heart} position={[0, 1.3, 0.5]} scale={0.001}>
-        <mesh ref={bigHeart} geometry={heartGeo} rotation={[0, 0, Math.PI]}>
-          <meshStandardMaterial color={HEART} emissive={HEART} emissiveIntensity={0.8} roughness={0.25} />
+      {/* Main glowing heart */}
+      <group
+        ref={heart}
+        position={[0, 1.3, 0.5]}
+        scale={0}
+      >
+        <mesh
+          ref={bigHeart}
+          geometry={heartGeometry}
+          rotation={[0, 0, Math.PI]}
+        >
+          <meshStandardMaterial
+            color={HEART}
+            emissive={HEART_GLOW}
+            emissiveIntensity={2.8}
+            roughness={0.25}
+            metalness={0.05}
+          />
         </mesh>
-        <pointLight color={HEART} intensity={2.2} distance={3} />
+
+        <pointLight
+          color={HEART_GLOW}
+          intensity={2.5}
+          distance={2.5}
+        />
       </group>
+
+      {/* Decorative hearts */}
+      <FloatingHeart
+        position={[-0.75, 1.65, 0.1]}
+        scale={0.055}
+        speed={0.9}
+      />
+
+      <FloatingHeart
+        position={[0.75, 1.85, 0.05]}
+        scale={0.045}
+        speed={1.15}
+      />
+
+      <FloatingHeart
+        position={[0.55, 0.9, 0.05]}
+        scale={0.035}
+        speed={0.75}
+      />
     </group>
   );
 }
+
+/* -------------------------------------------------------
+   Main Scene
+------------------------------------------------------- */
 
 useGLTF.preload(MODEL);
 
 export default function CompanionScene() {
   return (
     <Canvas
-      dpr={[1, 1.7]}
+      dpr={[1, 1.5]}
       shadows
-      gl={{ alpha: true, antialias: true, powerPreference: "low-power", preserveDrawingBuffer: true }}
-      camera={{ position: [0, 0.35, 4.2], fov: 38 }}
-      style={{ pointerEvents: "none", background: "transparent" }}
+      gl={{
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      }}
+      camera={{
+        position: [0, 0.35, 4.2],
+        fov: 38,
+      }}
+      style={{
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        background: "transparent",
+      }}
     >
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[2.5, 4, 3]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
-      <directionalLight position={[-3, 1.5, 2]} intensity={0.6} color="#ff9ec4" />
-      <directionalLight position={[0, 2, -4]} intensity={0.8} color="#9fd0ff" />
-      <Environment>
-        <Lightformer intensity={1.6} position={[0, 4, 2]} scale={[8, 8, 1]} />
-        <Lightformer intensity={0.8} color="#ffd6e6" position={[-4, 1, 2]} rotation-y={Math.PI / 2} scale={[10, 3, 1]} />
+      {/* Soft base lighting */}
+      <ambientLight intensity={0.5} />
+
+      {/* Main cinematic light */}
+      <directionalLight
+        position={[2.5, 4, 3]}
+        intensity={1.8}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+      />
+
+      {/* Warm front light */}
+      <directionalLight
+        position={[-3, 2, 2]}
+        intensity={0.7}
+      />
+
+      {/* Soft rim light */}
+      <directionalLight
+        position={[0, 2, -4]}
+        intensity={0.9}
+      />
+
+      {/* Romantic environment lighting */}
+      <Environment resolution={128}>
+        <Lightformer
+          intensity={1.4}
+          position={[0, 4, 2]}
+          scale={[4, 2, 1]}
+        />
+
+        <Lightformer
+          intensity={0.7}
+          position={[-3, 2, 1]}
+          scale={[2, 2, 1]}
+        />
       </Environment>
-      <ContactShadows position={[0, -0.95, 0]} opacity={0.35} scale={6} blur={2.6} far={2} />
-      <mesh position={[0,0,0]}><boxGeometry args={[1,1,1]} /><meshBasicMaterial color="#ff0000" /></mesh>
-      <Guy />
+
+      {/* Character floating effect */}
+      <Float
+        speed={0.7}
+        rotationIntensity={0.025}
+        floatIntensity={0.04}
+      >
+        <Guy />
+      </Float>
+
+      {/* Soft ground shadow */}
+      <ContactShadows
+        position={[0, -0.95, 0]}
+        opacity={0.35}
+        scale={4}
+        blur={2.5}
+        far={2}
+      />
+
+      {/* Very subtle ground plane */}
+      <mesh
+        position={[0, -0.97, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+      >
+        <planeGeometry args={[4, 4]} />
+        <meshStandardMaterial
+          transparent
+          opacity={0}
+        />
+      </mesh>
     </Canvas>
   );
 }
+      
