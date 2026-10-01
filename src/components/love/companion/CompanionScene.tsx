@@ -418,14 +418,7 @@ function Guy() {
     const breathing =
       Math.sin(time * 2.0) * 0.012;
 
-    root.current.scale.y =
-      fit.scale * (1 + breathing);
-
-    root.current.scale.x =
-      fit.scale;
-
-    root.current.scale.z =
-      fit.scale;
+    root.current.scale.set(1, 1 + breathing, 1);
 
     /* -----------------------------------------------
        Gentle idle movement
@@ -433,10 +426,9 @@ function Guy() {
 
     if (!walking) {
       root.current.position.y =
-        fit.y +
         Math.sin(time * 1.5) * 0.012;
     } else {
-      root.current.position.y = fit.y;
+      root.current.position.y = 0;
     }
 
     /* -----------------------------------------------

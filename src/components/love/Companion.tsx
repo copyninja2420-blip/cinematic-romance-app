@@ -107,7 +107,7 @@ export function Companion() {
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 select-none">
       {message && (
         <div
-          className="absolute bottom-[10.5rem] -translate-x-1/2 transition-[left] duration-700 ease-out"
+          className="absolute bottom-[15rem] -translate-x-1/2 transition-[left] duration-700 ease-out"
           style={{ left: `${Math.min(88, Math.max(12, x * 100))}%` }}
         >
           <div className="glass max-w-[13rem] rounded-2xl px-4 py-2 text-center font-serif text-[0.78rem] leading-snug text-warm shadow-lg animate-rise">
@@ -116,7 +116,7 @@ export function Companion() {
         </div>
       )}
 
-      <div className="relative h-52 w-full">
+      <div className="relative h-72 w-full">
         <Suspense fallback={null}>
           <CompanionScene />
         </Suspense>
