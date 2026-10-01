@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 const CORRECT_PASSWORD = "06062024"; // change this
 

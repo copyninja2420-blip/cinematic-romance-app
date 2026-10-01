@@ -35,7 +35,7 @@ const HEART = "#ff5d84";
 const HEART_GLOW = "#ff9fba";
 
 /* Existing animation names from your GLB */
-const CLIPS: Record<string, string> = {
+const CLIPS = {
   idle: "Man_Idle",
   walk: "Man_Walk",
   run: "Man_Run",
