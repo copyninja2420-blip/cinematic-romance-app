@@ -251,7 +251,9 @@ function Guy() {
   ------------------------------------------------------- */
 
   const fit = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(cloned);
+    cloned.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(cloned, true);
+    (window as unknown as Record<string, unknown>)["__fitdbg"] = [box.min.toArray(), box.max.toArray()];
 
     const size = new THREE.Vector3();
 
