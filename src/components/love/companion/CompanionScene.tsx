@@ -251,7 +251,8 @@ function Guy() {
   ------------------------------------------------------- */
 
   const fit = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(cloned);
+    cloned.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(cloned, true);
 
     const size = new THREE.Vector3();
 
@@ -399,10 +400,11 @@ function Guy() {
        Direction
     ------------------------------------------------ */
 
-    if (Math.abs(dx) > 0.015) {
-      targetRotation.current =
-        dx > 0 ? 0 : Math.PI;
-    }
+    targetRotation.current = walking
+      ? dx > 0
+        ? Math.PI / 2
+        : -Math.PI / 2
+      : 0;
 
     root.current.rotation.y = THREE.MathUtils.damp(
       root.current.rotation.y,
@@ -418,14 +420,7 @@ function Guy() {
     const breathing =
       Math.sin(time * 2.0) * 0.012;
 
-    root.current.scale.y =
-      fit.scale * (1 + breathing);
-
-    root.current.scale.x =
-      fit.scale;
-
-    root.current.scale.z =
-      fit.scale;
+    root.current.scale.set(1, 1 + breathing, 1);
 
     /* -----------------------------------------------
        Gentle idle movement
@@ -433,10 +428,9 @@ function Guy() {
 
     if (!walking) {
       root.current.position.y =
-        fit.y +
         Math.sin(time * 1.5) * 0.012;
     } else {
-      root.current.position.y = fit.y;
+      root.current.position.y = 0;
     }
 
     /* -----------------------------------------------
@@ -588,7 +582,7 @@ export default function CompanionScene() {
           powerPreference: "high-performance",
         }}
         camera={{
-          position: [0, 1.15, 5.2],
+          position: [0, 1.5, 6.4],
           fov: 34,
           near: 0.1,
           far: 50,
