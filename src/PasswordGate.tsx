@@ -1,12 +1,13 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 const CORRECT_PASSWORD = "06062024"; // change this
 
 export default function PasswordGate({ children }: { children: ReactNode }) {
   const [input, setInput] = useState("");
-  const [unlocked, setUnlocked] = useState(
-    sessionStorage.getItem("gate-unlocked") === "true"
-  );
+  const [unlocked, setUnlocked] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem("gate-unlocked") === "true") setUnlocked(true);
+  }, []);
   const [error, setError] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
