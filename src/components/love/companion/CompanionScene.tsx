@@ -582,7 +582,7 @@ export default function CompanionScene() {
           powerPreference: "high-performance",
         }}
         camera={{
-          position: [0, 1.15, 5.2],
+          position: [0, 1.05, 4.6],
           fov: 34,
           near: 0.1,
           far: 50,
