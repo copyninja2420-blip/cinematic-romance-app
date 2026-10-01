@@ -253,7 +253,6 @@ function Guy() {
   const fit = useMemo(() => {
     cloned.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(cloned, true);
-    (window as unknown as Record<string, unknown>)["__fitdbg"] = [box.min.toArray(), box.max.toArray()];
 
     const size = new THREE.Vector3();
 
@@ -401,10 +400,11 @@ function Guy() {
        Direction
     ------------------------------------------------ */
 
-    if (Math.abs(dx) > 0.015) {
-      targetRotation.current =
-        dx > 0 ? 0 : Math.PI;
-    }
+    targetRotation.current = walking
+      ? dx > 0
+        ? Math.PI / 2
+        : -Math.PI / 2
+      : 0;
 
     root.current.rotation.y = THREE.MathUtils.damp(
       root.current.rotation.y,
