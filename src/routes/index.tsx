@@ -50,7 +50,6 @@ function LoveStoryPage() {
       {opened && (
         <>
           <Atmosphere particles={30} hearts={10} />
-          <Companion />
           <div className="relative z-10 animate-fade-slow">
             <div data-companion="hero"><Hero /></div>
             <div data-companion="timeline"><Timeline /></div>
@@ -59,6 +58,7 @@ function LoveStoryPage() {
             <div data-companion="surprise"><Surprise /></div>
             <div data-companion="reasons"><Reasons /></div>
             <div data-companion="finale"><Finale /></div>
+            <Companion />
             <div className="flex flex-col items-center gap-5 pb-6">
               <ShareButton />
             </div>

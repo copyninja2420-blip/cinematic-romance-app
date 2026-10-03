@@ -22,7 +22,7 @@ export function Finale() {
   const secretFound = taps >= 3;
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-7 py-24 text-center">
+    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-7 pb-24 pt-28 text-center">
       <div className="absolute inset-0 bg-halo" aria-hidden="true" />
       <div ref={ref} className={`relative max-w-sm reveal ${shown ? "reveal-in" : ""}`}>
         <p className="script text-2xl text-gold-soft">{finale.question}</p>
@@ -88,7 +88,7 @@ export function Finale() {
                     setMood("present");
                     say("Forever with you.", 6000);
                   }}
-                  className={`btn-love mt-12 ${forever ? "btn-forever" : ""}`}
+                  className={`btn-love mt-12 h-auto w-auto max-w-full whitespace-normal px-9 py-4 text-center leading-snug ${forever ? "btn-forever" : ""}`}
                 >
                   <span className="btn-love-glow" />
                   <span className="relative">

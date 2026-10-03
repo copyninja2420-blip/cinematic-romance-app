@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   getCompanion,
   say,
@@ -104,19 +106,23 @@ export function Companion() {
   if (!enabled || hidden) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 select-none">
+    <aside
+      className="relative z-10 mx-auto mt-2 w-full max-w-2xl select-none overflow-hidden px-4 pb-10"
+      aria-label="Your romantic companion"
+    >
+      <div className="relative min-h-[24rem] overflow-hidden rounded-2xl border border-gold-soft/15 bg-burgundy-deep/25">
       {message && (
         <div
-          className="absolute bottom-[18rem] -translate-x-1/2 transition-[left] duration-700 ease-out"
+          className="pointer-events-none absolute top-5 z-30 -translate-x-1/2 transition-[left] duration-700 ease-out"
           style={{ left: `${Math.min(88, Math.max(12, x * 100))}%` }}
         >
-          <div className="glass max-w-[13rem] rounded-2xl px-4 py-2 text-center font-serif text-[0.78rem] leading-snug text-warm shadow-lg animate-rise">
+          <div className="glass max-w-[13rem] rounded-xl px-4 py-2 text-center font-serif text-[0.78rem] leading-snug text-warm shadow-lg animate-rise">
             {message}
           </div>
         </div>
       )}
 
-      <div className="relative h-[22rem] w-full">
+      <div className="relative h-[24rem] w-full">
         <Suspense fallback={null}>
           <CompanionScene />
         </Suspense>
@@ -126,18 +132,25 @@ export function Companion() {
           type="button"
           aria-label="Say hello to him"
           onClick={tapCompanion}
-          className="pointer-events-auto absolute bottom-2 size-24 -translate-x-1/2 rounded-full transition-[left] duration-700 ease-out"
+          className="pointer-events-auto absolute bottom-2 size-24 -translate-x-1/2 rounded-full transition-[left] duration-700 ease-out focus-visible:outline-2 focus-visible:outline-gold-soft"
           style={{ left: `${Math.min(94, Math.max(6, x * 100))}%` }}
         />
       </div>
 
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="icon"
+        aria-label="Hide companion"
         onClick={() => setHidden(true)}
-        className="pointer-events-auto absolute bottom-3 right-3 rounded-full border border-gold-soft/25 bg-black/35 px-3 py-1 text-[0.6rem] uppercase tracking-[0.2em] text-warm/60 backdrop-blur"
+        className="pointer-events-auto absolute right-3 top-3 z-40 size-8 rounded-full border border-gold-soft/25 bg-burgundy-deep/70 text-warm/70 backdrop-blur hover:bg-burgundy hover:text-warm"
       >
-        Hide
-      </button>
-    </div>
+        <X className="size-3.5" />
+      </Button>
+      </div>
+      <p className="mt-4 text-center font-serif text-xs tracking-[0.12em] text-warm/55">
+        Here with you, all the way to forever.
+      </p>
+    </aside>
   );
 }

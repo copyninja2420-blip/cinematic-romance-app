@@ -53,7 +53,7 @@ export function Gallery() {
 
       {item && (
         <div
-          className="lightbox"
+          className="lightbox px-4 pb-6 pt-24"
           role="dialog"
           aria-modal="true"
           onClick={() => setActive(null)}
@@ -61,7 +61,7 @@ export function Gallery() {
           <button
             type="button"
             aria-label="Close"
-            className="absolute right-5 top-5 rounded-full border border-warm/20 p-2 text-warm/80"
+            className="absolute left-5 top-5 rounded-full border border-warm/20 p-2 text-warm/80"
             onClick={() => setActive(null)}
           >
             <X className="size-5" />

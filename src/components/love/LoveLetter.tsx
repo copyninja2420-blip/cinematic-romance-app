@@ -34,7 +34,7 @@ export function LoveLetter() {
   };
 
   return (
-    <section className="relative px-6 py-24">
+    <section className="relative px-6 pb-24 pt-28">
       {burst.length > 0 && (
         <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden" aria-hidden="true">
           {burst.map((h, i) => (
@@ -71,13 +71,13 @@ export function LoveLetter() {
         )}
 
         {open && (
-          <div className="letter-paper animate-rise mt-6">
+          <div className="letter-paper animate-rise mt-6 scroll-mt-20">
             <p className="script text-2xl text-ink">{letter.greeting}</p>
             <p className="mt-4 min-h-24 whitespace-pre-line font-serif text-[0.95rem] leading-relaxed text-ink/80">
               <Typewriter text={letter.body} speed={22} onDone={handleDone} />
             </p>
             {typed && (
-              <p className="romantic name-shimmer animate-rise mt-6 text-right text-3xl">
+              <p className="romantic letter-signature animate-rise mt-6 text-right text-3xl leading-snug">
                 {letter.signature}
               </p>
             )}
