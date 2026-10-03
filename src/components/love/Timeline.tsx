@@ -12,7 +12,7 @@ function Chapter({ index }: { index: number }) {
   return (
     <li
       ref={ref}
-      className={`relative pl-12 pb-10 reveal ${shown ? "reveal-in" : ""}`}
+      className={`relative pb-10 pl-11 reveal sm:pl-12 ${shown ? "reveal-in" : ""}`}
       style={{ transitionDelay: `${index * 90}ms` }}
     >
       <span className="timeline-node">
@@ -22,15 +22,15 @@ function Chapter({ index }: { index: number }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="glass w-full rounded-2xl px-5 py-4 text-left active:scale-[0.99] transition"
+        className="glass w-full overflow-hidden rounded-xl px-4 py-4 text-left transition active:scale-[0.99] sm:px-5"
         aria-expanded={open}
       >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold-soft/80">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+          <div className="min-w-0">
+            <p className="inline-flex rounded-full border border-gold-soft/20 bg-burgundy-deep/45 px-2.5 py-1 text-[0.62rem] uppercase tracking-[0.18em] text-gold-soft">
               {chapter.date}
             </p>
-            <h3 className="mt-1 font-display text-xl text-warm">{chapter.label}</h3>
+            <h3 className="mt-2 font-display text-xl leading-tight text-warm">{chapter.label}</h3>
             <p className="script mt-1 text-base text-rose-glow/90">{chapter.caption}</p>
           </div>
           <ChevronDown
@@ -38,7 +38,7 @@ function Chapter({ index }: { index: number }) {
           />
         </div>
 
-        <div className={`grid transition-all duration-500 ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+        <div className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
           <div className="overflow-hidden">
             <div className="photo-slot mt-4">
               {chapter.image ? (

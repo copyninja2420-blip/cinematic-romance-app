@@ -24,7 +24,7 @@ function ReasonCard({ index }: { index: number }) {
           </span>
         </span>
         <span className="flip-face flip-back">
-          <span className="font-serif text-[0.8rem] leading-snug text-warm/90">
+          <span className="font-serif text-[clamp(0.68rem,2.7vw,0.82rem)] font-semibold leading-snug text-warm">
             {reasons[index]}
           </span>
         </span>
@@ -35,12 +35,12 @@ function ReasonCard({ index }: { index: number }) {
 
 export function Reasons() {
   return (
-    <section className="relative px-6 py-24">
+    <section className="relative px-4 py-24 sm:px-6">
       <SectionTitle
         kicker={`${reasons.length} reasons`}
         title="Why I love you — tap each heart"
       />
-      <div className="mx-auto mt-12 grid max-w-md grid-cols-3 gap-3.5 [perspective:900px]">
+      <div className="mx-auto mt-12 grid w-full max-w-md grid-cols-3 gap-2.5 [perspective:900px] sm:gap-3.5">
         {reasons.map((r, i) => (
           <ReasonCard key={r} index={i} />
         ))}

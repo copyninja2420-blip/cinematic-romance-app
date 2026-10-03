@@ -22,7 +22,7 @@ export function Opening({ onOpen }: { onOpen: () => void }) {
     <div className={`curtain ${bursting ? "curtain-lift" : ""}`}>
       <Atmosphere particles={18} hearts={8} />
       <Fireworks bursts={5} sparks={12} />
-      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-7 text-center">
+      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-7 pb-10 pt-24 text-center">
         <p className="script animate-fade-in text-3xl text-gold-soft/90">❦</p>
 
         <h1 className="romantic name-shimmer mt-4 text-4xl leading-tight">
