@@ -84,11 +84,9 @@ export function Companion() {
       )}
 
       <div className="relative h-[24rem] w-full">
-        {nearby && (
-          <Suspense fallback={null}>
-            <CompanionScene />
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <CompanionScene active={nearby} />
+        </Suspense>
 
         {/* tap target that follows him */}
         <button

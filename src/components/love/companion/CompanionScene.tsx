@@ -561,10 +561,11 @@ function LoadingCharacter() {
    MAIN SCENE
 ========================================================= */
 
-export default function CompanionScene() {
+export default function CompanionScene({ active }: { active: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0 z-20 size-full">
       <Canvas
+        frameloop={active ? "always" : "never"}
         dpr={[1, 1.5]}
         gl={{
           antialias: false,
