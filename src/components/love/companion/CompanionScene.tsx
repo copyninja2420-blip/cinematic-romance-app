@@ -28,7 +28,7 @@ const MODEL = "/models/companion.glb";
    SETTINGS
 ========================================================= */
 
-const TARGET_HEIGHT = 1.9;
+const TARGET_HEIGHT = 2.65;
 
 const HEART = "#ff5d84";
 const HEART_GLOW = "#ff9fba";
@@ -177,8 +177,8 @@ function Guy() {
   const neck = useRef<THREE.Object3D | null>(null);
   const morphMeshes = useRef<THREE.Mesh[]>([]);
 
-  const currentX = useRef(0);
-  const targetRotation = useRef(0);
+  const currentX = useRef(0.5);
+  const targetRotation = useRef(-Math.PI / 2);
 
   const { actions, mixer } = useAnimations(
     gltf.animations,
@@ -408,11 +408,7 @@ function Guy() {
        Direction
     ------------------------------------------------ */
 
-    targetRotation.current = walking
-      ? dx > 0
-        ? Math.PI / 2
-        : -Math.PI / 2
-      : 0;
+    targetRotation.current = -Math.PI / 2;
 
     root.current.rotation.y = THREE.MathUtils.damp(
       root.current.rotation.y,
