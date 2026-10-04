@@ -56,7 +56,10 @@ export function Companion() {
     io.observe(slot);
     const onVisibility = () => setNearby(!document.hidden && slot.getBoundingClientRect().top < window.innerHeight + 240);
     document.addEventListener("visibilitychange", onVisibility);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
 
   if (!enabled || hidden) return null;
