@@ -43,6 +43,7 @@ export function Companion() {
   }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     const slot = slotRef.current;
     if (!slot) return;
     const io = new IntersectionObserver(([entry]) => {
@@ -60,7 +61,7 @@ export function Companion() {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [enabled]);
 
   if (!enabled || hidden) return null;
 
