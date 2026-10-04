@@ -7,3 +7,6 @@
 - [x] Improve the mobile reasons grid and flipped-text contrast.
 - [x] Prevent the finale button label from clipping.
 - [x] Verify the live flow and error state.
+- [ ] Optimize the 3D companion and ambient effects for mobile performance.
+- [ ] Add the proposal counter, candle wish, hold interaction, open-when letters, and star map.
+- [ ] Verify all new interactions and the mobile render flow.
