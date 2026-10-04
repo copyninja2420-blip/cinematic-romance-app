@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
   Canvas,
   useFrame,
@@ -6,7 +6,6 @@ import {
 } from "@react-three/fiber";
 
 import {
-  ContactShadows,
   Environment,
   Float,
   Html,
@@ -29,7 +28,7 @@ const MODEL = "/models/companion.glb";
    SETTINGS
 ========================================================= */
 
-const TARGET_HEIGHT = 1.9;
+const TARGET_HEIGHT = 2.65;
 
 const HEART = "#ff5d84";
 const HEART_GLOW = "#ff9fba";
@@ -176,11 +175,10 @@ function Guy() {
 
   const head = useRef<THREE.Object3D | null>(null);
   const neck = useRef<THREE.Object3D | null>(null);
+  const morphMeshes = useRef<THREE.Mesh[]>([]);
 
-  const currentX = useRef(0);
-  const currentY = useRef(0);
-
-  const targetRotation = useRef(0);
+  const currentX = useRef(0.5);
+  const targetRotation = useRef(-Math.PI / 2);
 
   const { actions, mixer } = useAnimations(
     gltf.animations,
@@ -212,8 +210,14 @@ function Guy() {
       }
 
       if (object instanceof THREE.Mesh) {
-        object.castShadow = true;
-        object.receiveShadow = true;
+        object.castShadow = false;
+        object.receiveShadow = false;
+        if (object.morphTargetDictionary && object.morphTargetInfluences) {
+          morphMeshes.current.push(object);
+          for (const [name, index] of Object.entries(object.morphTargetDictionary)) {
+            if (name.toLowerCase().includes("smile")) object.morphTargetInfluences[index] = 0.7;
+          }
+        }
 
         /*
          * Keep the original model materials.
@@ -324,14 +328,19 @@ function Guy() {
     const dt = Math.min(delta, 0.05);
     const time = state.clock.elapsedTime;
 
+    for (const mesh of morphMeshes.current) {
+      if (!mesh.morphTargetDictionary || !mesh.morphTargetInfluences) continue;
+      const blink = Math.max(0, Math.sin(time * 0.72) - 0.985) * 65;
+      for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
+        if (name.toLowerCase().includes("blink")) mesh.morphTargetInfluences[index] = blink;
+      }
+    }
+
     const companion = getCompanion();
 
     const mood = companion.mood as Mood;
 
-    const targetX =
-      typeof companion.targetX === "number"
-        ? companion.targetX
-        : 0.18;
+    const targetX = 0.5;
 
     /* -----------------------------------------------
        Movement
@@ -339,8 +348,7 @@ function Guy() {
 
     const dx = targetX - currentX.current;
 
-    const movementSpeed =
-      mood === "run" ? 3.2 : 1.8;
+    const movementSpeed = 2.2;
 
     currentX.current +=
       dx *
@@ -400,11 +408,7 @@ function Guy() {
        Direction
     ------------------------------------------------ */
 
-    targetRotation.current = walking
-      ? dx > 0
-        ? Math.PI / 2
-        : -Math.PI / 2
-      : 0;
+    targetRotation.current = -Math.PI / 2;
 
     root.current.rotation.y = THREE.MathUtils.damp(
       root.current.rotation.y,
@@ -542,15 +546,7 @@ function Guy() {
 function LoadingCharacter() {
   return (
     <Html center>
-      <div
-        style={{
-          color: "#ffd7e2",
-          fontSize: "13px",
-          fontFamily: "serif",
-          textAlign: "center",
-          whiteSpace: "nowrap",
-        }}
-      >
+      <div className="whitespace-nowrap font-serif text-[13px] text-rose-soft">
         Loading your little companion ❤️
       </div>
     </Html>
@@ -561,23 +557,14 @@ function LoadingCharacter() {
    MAIN SCENE
 ========================================================= */
 
-export default function CompanionScene() {
+export default function CompanionScene({ active }: { active: boolean }) {
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: 20,
-      }}
-    >
+    <div className="pointer-events-none absolute inset-0 z-20 size-full">
       <Canvas
-        shadows
+        frameloop={active ? "always" : "never"}
         dpr={[1, 1.5]}
         gl={{
-          antialias: true,
+          antialias: false,
           alpha: true,
           powerPreference: "high-performance",
         }}
@@ -592,30 +579,18 @@ export default function CompanionScene() {
             Lighting
         ------------------------------------------------- */}
 
-        <ambientLight intensity={1.2} />
+        <ambientLight intensity={1.45} />
 
         <directionalLight
           position={[3, 5, 4]}
           intensity={2.2}
-          castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-          shadow-camera-near={0.5}
-          shadow-camera-far={15}
         />
 
         <pointLight
           position={[-3, 2.5, 2]}
-          intensity={2.5}
+          intensity={1.35}
           distance={7}
           color="#ff9fb8"
-        />
-
-        <pointLight
-          position={[3, 2, 1]}
-          intensity={1.5}
-          distance={6}
-          color="#ffd6df"
         />
 
         {/* -------------------------------------------------
@@ -637,7 +612,9 @@ export default function CompanionScene() {
             Character
         ------------------------------------------------- */}
 
-        <Guy />
+        <Suspense fallback={<LoadingCharacter />}>
+          <Guy />
+        </Suspense>
 
         {/* -------------------------------------------------
             Decorative hearts
@@ -656,31 +633,6 @@ export default function CompanionScene() {
           delay={1}
         />
 
-        <FloatingHeart
-          position={[-0.85, 2.6, -0.3]}
-          scale={0.035}
-          speed={1.4}
-          delay={2}
-        />
-
-        <FloatingHeart
-          position={[0.9, 2.8, -0.5]}
-          scale={0.045}
-          speed={0.9}
-          delay={3}
-        />
-
-        {/* -------------------------------------------------
-            Ground shadow
-        ------------------------------------------------- */}
-
-        <ContactShadows
-          position={[0, 0, 0]}
-          opacity={0.45}
-          scale={8}
-          blur={2.5}
-          far={4}
-        />
       </Canvas>
     </div>
   );

@@ -10,6 +10,7 @@ import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { Opening } from "@/components/love/Opening";
 import { Reasons } from "@/components/love/Reasons";
+import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { ShareButton } from "@/components/love/ShareButton";
 import { Surprise } from "@/components/love/Surprise";
 import { Timeline } from "@/components/love/Timeline";
@@ -49,12 +50,13 @@ function LoveStoryPage() {
 
       {opened && (
         <>
-          <Atmosphere particles={30} hearts={10} />
+          <Atmosphere particles={20} hearts={6} />
           <div className="relative z-10 animate-fade-slow">
             <div data-companion="hero"><Hero /></div>
             <div data-companion="timeline"><Timeline /></div>
             <div data-companion="gallery"><Gallery /></div>
             <div data-companion="letter"><LoveLetter /></div>
+            <RomanticMilestones />
             <div data-companion="surprise"><Surprise /></div>
             <div data-companion="reasons"><Reasons /></div>
             <div data-companion="finale"><Finale /></div>

@@ -1,15 +1,12 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  getCompanion,
   say,
   setMood,
   setPointer,
   tapCompanion,
   useCompanion,
-  walkTo,
-  type Mood,
 } from "@/lib/companion";
 
 const CompanionScene = lazy(() => import("./companion/CompanionScene"));
@@ -23,22 +20,12 @@ function webglOk() {
   }
 }
 
-/** Scripted beats for the sections he travels through. */
-const SCENES: Record<string, { x: number; mood: Mood; line?: string }> = {
-  hero: { x: 0.18, mood: "wave", line: "Happy Birthday, my love ❤️" },
-  timeline: { x: 0.12, mood: "point", line: "Our story starts here…" },
-  gallery: { x: 0.85, mood: "jump", line: "Look at us 💕" },
-  letter: { x: 0.14, mood: "read", line: "Go on… open it 💌" },
-  surprise: { x: 0.88, mood: "peek", line: "There is another surprise ahead 👀" },
-  reasons: { x: 0.12, mood: "walk", line: "So many reasons…" },
-  finale: { x: 0.5, mood: "present", line: "Happy Birthday, My Love ❤️" },
-};
-
-
 export function Companion() {
   const { x, message } = useCompanion();
   const [enabled, setEnabled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [nearby, setNearby] = useState(false);
+  const slotRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!webglOk()) return;
@@ -55,58 +42,32 @@ export function Companion() {
     return () => window.removeEventListener("pointermove", move);
   }, []);
 
-  /* react to the section on screen */
   useEffect(() => {
     if (!enabled) return;
-    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-companion]"));
-    if (!els.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting || e.intersectionRatio < 0.45) continue;
-          const key = e.target.getAttribute("data-companion") ?? "";
-          const scene = SCENES[key];
-          if (!scene) continue;
-          walkTo(scene.x, Math.abs(scene.x - getCompanion().x) > 0.4 ? "run" : "walk");
-          window.setTimeout(() => setMood(scene.mood, scene.mood === "present" ? 0 : 5000), 1200);
-          if (scene.line) say(scene.line, 4200);
-          if (scene.mood === "present") {
-            window.setTimeout(() => say("Forever with you.", 6000), 5200);
-          }
-          if (scene.mood === "peek") {
-            window.setTimeout(() => setMood("heart", 3000), 3000);
-          }
-        }
-      },
-      { threshold: [0.45] },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [enabled]);
-
-  /* little life of his own: wander, blow kisses, hold a heart */
-  useEffect(() => {
-    if (!enabled) return;
-    const id = window.setInterval(() => {
-      const s = getCompanion();
-      if (s.mood === "present" || s.mood === "read") return;
-      const roll = Math.random();
-      if (roll < 0.3) walkTo(0.12 + Math.random() * 0.76);
-      else if (roll < 0.4) walkTo(0.12 + Math.random() * 0.76, "run");
-      else if (roll < 0.56) setMood("kiss", 2400);
-      else if (roll < 0.7) setMood("heart", 3200);
-      else if (roll < 0.82) setMood("wave", 2200);
-      else if (roll < 0.92) setMood("point", 2400);
-      else setMood("jump", 1400);
-
-    }, 7000);
-    return () => window.clearInterval(id);
+    const slot = slotRef.current;
+    if (!slot) return;
+    const io = new IntersectionObserver(([entry]) => {
+      const visible = Boolean(entry?.isIntersecting) && !document.hidden;
+      setNearby(visible);
+      if (visible) {
+        setMood("heart");
+        say("Happy Birthday, My Love ❤️", 4200);
+      }
+    }, { rootMargin: "240px 0px", threshold: 0.01 });
+    io.observe(slot);
+    const onVisibility = () => setNearby(!document.hidden && slot.getBoundingClientRect().top < window.innerHeight + 240);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [enabled]);
 
   if (!enabled || hidden) return null;
 
   return (
     <aside
+      ref={slotRef}
       className="relative z-10 mx-auto mt-2 w-full max-w-2xl select-none overflow-hidden px-4 pb-10"
       aria-label="Your romantic companion"
     >
@@ -124,7 +85,7 @@ export function Companion() {
 
       <div className="relative h-[24rem] w-full">
         <Suspense fallback={null}>
-          <CompanionScene />
+          <CompanionScene active={nearby} />
         </Suspense>
 
         {/* tap target that follows him */}
@@ -143,7 +104,7 @@ export function Companion() {
         size="icon"
         aria-label="Hide companion"
         onClick={() => setHidden(true)}
-        className="pointer-events-auto absolute right-3 top-3 z-40 size-8 rounded-full border border-gold-soft/25 bg-burgundy-deep/70 text-warm/70 backdrop-blur hover:bg-burgundy hover:text-warm"
+        className="pointer-events-auto absolute right-3 top-3 z-40 size-8 rounded-full border border-gold-soft/25 bg-burgundy-deep/90 text-warm/70 hover:bg-burgundy hover:text-warm"
       >
         <X className="size-3.5" />
       </Button>

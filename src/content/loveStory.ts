@@ -174,6 +174,45 @@ export const surprise = {
     "You are my favorite person, my safest place, my happiest memory, and the person I want beside me for every chapter of my life. ❤️",
 };
 
+/** Proposal and interactive milestone copy. Edit these messages freely. */
+export const proposalMilestone = {
+  date: "2024-06-06T00:00:00",
+  title: "Since That Special ‘Yes’ — June 6, 2024",
+  subtitle: "The day my whole world found its meaning",
+  caption: "Every single second with you is my favorite memory.",
+};
+
+export const birthdayWish = {
+  title: "Make A Birthday Wish",
+  revealed: "May every single wish of yours come true ❤️",
+};
+
+export const handHold = {
+  title: "Hold My Hand",
+  instruction: "Press and hold until our hearts meet.",
+  revealed: "No matter what comes, you will never face it alone. My hand is yours, always. ❤️",
+};
+
+export const openWhenLetters = [
+  {
+    title: "Open when you miss me",
+    message: "Close your eyes and remember my arms around you. Distance can never make my heart feel far from yours.",
+  },
+  {
+    title: "Open when you feel stressed",
+    message: "Breathe slowly, my love. You do not have to carry everything at once. Rest here with me for a little while.",
+  },
+  {
+    title: "Open when you need a smile",
+    message: "That beautiful smile is my favorite sight in this world. Imagine me doing something silly just to see it again. ❤️",
+  },
+];
+
+export const starMap = {
+  title: "Written In The Stars",
+  quote: "Out of billions of galaxies and infinite stars, I found you.",
+};
+
 
 /** 10–20 reasons. Add, remove or rewrite freely. */
 export const reasons: string[] = [
