@@ -550,15 +550,7 @@ function Guy() {
 function LoadingCharacter() {
   return (
     <Html center>
-      <div
-        style={{
-          color: "#ffd7e2",
-          fontSize: "13px",
-          fontFamily: "serif",
-          textAlign: "center",
-          whiteSpace: "nowrap",
-        }}
-      >
+      <div className="whitespace-nowrap font-serif text-[13px] text-rose-soft">
         Loading your little companion ❤️
       </div>
     </Html>
@@ -623,7 +615,9 @@ export default function CompanionScene() {
             Character
         ------------------------------------------------- */}
 
-        <Guy />
+        <Suspense fallback={<LoadingCharacter />}>
+          <Guy />
+        </Suspense>
 
         {/* -------------------------------------------------
             Decorative hearts

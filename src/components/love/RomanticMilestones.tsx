@@ -81,7 +81,7 @@ function CandleWish() {
         aria-label={blown ? "Birthday candle extinguished" : "Blow out the birthday candle"}
         aria-pressed={blown}
         onClick={() => setBlown(true)}
-        className="group mx-auto mt-8 h-36 w-24 flex-col gap-0 bg-transparent hover:bg-transparent"
+        className="group mx-auto mt-8 h-36 w-24 touch-manipulation flex-col gap-0 bg-transparent hover:bg-transparent"
       >
         <span className={`candle-flame ${blown ? "is-out" : ""}`} />
         <span className="candle-wick" />
@@ -148,7 +148,7 @@ function HoldMyHand() {
         onPointerUp={stop}
         onPointerCancel={stop}
         onPointerLeave={stop}
-        className="relative mx-auto mt-7 size-32 rounded-full bg-burgundy-deep/70 p-0 text-rose-glow hover:bg-burgundy-deep"
+        className="relative mx-auto mt-7 size-32 touch-none select-none rounded-full bg-burgundy-deep/70 p-0 text-rose-glow hover:bg-burgundy-deep"
         aria-label="Press and hold my hand"
       >
         <svg className="absolute inset-0 size-full -rotate-90" viewBox="0 0 104 104" aria-hidden="true">

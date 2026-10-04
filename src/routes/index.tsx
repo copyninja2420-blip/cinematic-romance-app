@@ -50,7 +50,7 @@ function LoveStoryPage() {
 
       {opened && (
         <>
-          <Atmosphere particles={30} hearts={10} />
+          <Atmosphere particles={20} hearts={6} />
           <div className="relative z-10 animate-fade-slow">
             <div data-companion="hero"><Hero /></div>
             <div data-companion="timeline"><Timeline /></div>
