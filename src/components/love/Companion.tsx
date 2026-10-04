@@ -105,7 +105,7 @@ export function Companion() {
         size="icon"
         aria-label="Hide companion"
         onClick={() => setHidden(true)}
-        className="pointer-events-auto absolute right-3 top-3 z-40 size-8 rounded-full border border-gold-soft/25 bg-burgundy-deep/70 text-warm/70 backdrop-blur hover:bg-burgundy hover:text-warm"
+        className="pointer-events-auto absolute right-3 top-3 z-40 size-8 rounded-full border border-gold-soft/25 bg-burgundy-deep/90 text-warm/70 hover:bg-burgundy hover:text-warm"
       >
         <X className="size-3.5" />
       </Button>
