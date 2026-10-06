@@ -12,6 +12,7 @@ import { Opening } from "@/components/love/Opening";
 import { Reasons } from "@/components/love/Reasons";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { ShareButton } from "@/components/love/ShareButton";
+import { WhatsAppReaction } from "@/components/love/WhatsAppReaction";
 import { Surprise } from "@/components/love/Surprise";
 import { Timeline } from "@/components/love/Timeline";
 import { couple } from "@/content/loveStory";
@@ -45,7 +46,7 @@ function LoveStoryPage() {
     <main className="relative min-h-[100svh] overflow-x-hidden bg-background">
       {!opened && <Opening onOpen={() => setOpened(true)} />}
 
-      <MusicToggle autoplay={opened} />
+      <MusicToggle autoplay />
       <HeartTap />
 
       {opened && (
@@ -63,6 +64,7 @@ function LoveStoryPage() {
             <Companion />
             <div className="flex flex-col items-center gap-5 pb-6">
               <ShareButton />
+              <WhatsAppReaction />
             </div>
             <footer className="pb-44 text-center">
               <p className="script text-lg text-gold-soft/80">

@@ -248,3 +248,12 @@ export const secret = {
     "[ WRITE MY SECRET MESSAGE HERE — the one thing only she should ever read. ]",
 };
 
+
+// WhatsApp reaction button — replace with your number: country code + number, digits only (e.g. "919876543210")
+export const whatsappReaction = {
+  phoneNumber: "910000000000",
+  label: "Tell me your reaction 💬❤️",
+  subtext: "Sends a direct message straight to my WhatsApp",
+  message:
+    "I just finished reading your surprise... and I don't even have words. I love you so much! ❤️🥹",
+};
