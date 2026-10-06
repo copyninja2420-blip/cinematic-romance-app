@@ -12,6 +12,8 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
   const [error, setError] = useState(false);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const errorTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const setDigitAt = (index: number, value: string) => {
     setDigits((prev) => prev.map((d, i) => (i === index ? value : d)));
