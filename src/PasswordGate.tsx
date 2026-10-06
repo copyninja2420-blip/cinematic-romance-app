@@ -223,20 +223,13 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
           >
             <span
               className={
-                "romantic pointer-events-none absolute inset-0 flex items-center justify-center text-5xl transition-colors duration-500 " +
-                (error ? "text-rose-glow/70" : "text-gold-soft/25")
+                "script relative text-5xl leading-none transition-all duration-500 " +
+                (error
+                  ? "scale-110 text-rose-soft drop-shadow-[0_0_12px_oklch(0.76_0.14_12/60%)]"
+                  : "text-gold-soft drop-shadow-[0_0_10px_oklch(0.84_0.1_84/40%)]")
               }
-              aria-hidden="true"
             >
               ❤
-            </span>
-            <span
-              className={
-                "script relative mb-0.5 text-4xl leading-none transition-colors duration-500 " +
-                (error ? "text-rose-soft" : "text-gold-soft")
-              }
-            >
-              1914
             </span>
             <div className="relative my-1 h-px w-10 bg-gradient-to-r from-transparent via-gold-soft/60 to-transparent" />
             <span className="relative font-display text-[11px] font-bold tracking-[0.28em] text-warm uppercase">
