@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Atmosphere } from "@/components/love/Atmosphere";
+import { startMusicFromGesture } from "@/lib/musicUnlock";
 
 const CORRECT_PASSWORD = "1914"; // change this
 
 const DIGIT_COUNT = 4;
+const SEAL_INITIAL = "S"; // letter stamped on the wax seal
 
 export default function PasswordGate({ children }: { children: ReactNode }) {
   const [digits, setDigits] = useState<string[]>(Array(DIGIT_COUNT).fill(""));
@@ -21,6 +23,7 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
 
   const tryUnlock = (code: string) => {
     if (code === CORRECT_PASSWORD) {
+      startMusicFromGesture();
       sessionStorage.setItem("gate-unlocked", "true");
       setUnlocking(true);
       setTimeout(() => setUnlocked(true), 950);
@@ -52,7 +55,6 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
       const filled = next.join("");
       if (filled.length === DIGIT_COUNT && !next.includes("")) {
         inputsRef.current[DIGIT_COUNT - 1]?.blur();
-        tryUnlock(filled);
       } else {
         inputsRef.current[Math.min(value.length, DIGIT_COUNT - 1)]?.focus();
       }
@@ -65,7 +67,6 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
       inputsRef.current[index + 1]?.focus();
     } else if (!next.includes("")) {
       inputsRef.current[index]?.blur();
-      tryUnlock(next.join(""));
     }
   };
 
@@ -148,10 +149,10 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
                   (error
                     ? "border border-rose-glow/70 bg-rose-glow/10 shadow-[0_0_14px_oklch(0.76_0.14_12/45%)]"
                     : filled
-                      ? "border border-gold-soft/80 bg-gradient-to-b from-white/10 to-transparent shadow-[inset_0_0_10px_oklch(0.84_0.1_84/22%),0_4px_18px_oklch(0_0_0/55%)]"
+                      ? "border border-gold-soft/80 bg-[oklch(0.16_0.05_12)] shadow-[inset_0_0_10px_oklch(0.84_0.1_84/22%),0_4px_18px_oklch(0_0_0/55%)]"
                       : active
-                        ? "border-2 border-warm/85 bg-white/5 shadow-[0_0_14px_oklch(0.96_0.014_70/30%)]"
-                        : "border border-gold-soft/40 bg-white/5 shadow-[0_4px_10px_oklch(0_0_0/35%)]")
+                        ? "border-2 border-gold-soft bg-[oklch(0.16_0.05_12)] shadow-[0_0_18px_oklch(0.84_0.1_84/45%)]"
+                        : "border border-gold-soft/40 bg-[oklch(0.16_0.05_12)] shadow-[0_4px_10px_oklch(0_0_0/35%)]")
                 }
               >
                 <input
@@ -168,7 +169,7 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
                   onChange={(e) => handleChange(i, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(i, e.key)}
                   onFocus={(e) => e.currentTarget.select()}
-                  className="h-full w-full bg-transparent text-center font-display text-3xl font-light text-warm caret-transparent outline-none"
+                  className="h-full w-full bg-transparent text-center font-display text-3xl font-semibold text-gold-soft caret-transparent [text-shadow:0_1px_0_oklch(0_0_0/70%),0_-1px_0_oklch(0.95_0.08_84/25%)] outline-none"
                 />
               </div>
             );
@@ -211,7 +212,7 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
           {/* The seal */}
           <div
             className={
-              "relative flex h-26 w-26 flex-col items-center justify-center rounded-full border-[3px] transition-transform duration-300 group-active:scale-95 " +
+              "relative flex h-26 w-26 ring-2 ring-gold-soft/50 ring-offset-4 ring-offset-transparent shadow-[0_0_28px_oklch(0.84_0.1_84/45%)] flex-col items-center justify-center rounded-full border-[3px] transition-transform duration-300 group-active:scale-95 " +
               (error
                 ? "scale-105 border-rose-glow"
                 : "border-gold-soft group-hover:scale-105")
@@ -231,7 +232,7 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
                   : "text-gold-soft drop-shadow-[0_0_10px_oklch(0.84_0.1_84/40%)]")
               }
             >
-              ❤
+              {SEAL_INITIAL}
             </span>
             <div className="relative my-1 h-px w-10 bg-gradient-to-r from-transparent via-gold-soft/60 to-transparent" />
             <span className="relative font-display text-[11px] font-bold tracking-[0.28em] text-warm uppercase">
