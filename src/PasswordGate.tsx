@@ -104,7 +104,7 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
       />
 
       {/* Floating fireflies & hearts */}
-      <Atmosphere particles={18} hearts={6} />
+      {mounted && <Atmosphere particles={18} hearts={6} />}
 
       {/* Ornate corner arcs */}
       <div
