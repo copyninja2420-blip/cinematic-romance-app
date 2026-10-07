@@ -1,6 +1,7 @@
-import { expect, test } from "bun:test";
+import { test } from "node:test";
+import { strictEqual } from "node:assert";
 import { gatewayUrl } from "./secretGateway";
 
 test("QR target preserves the current live URL including query and fragment", () => {
-  expect(gatewayUrl({ href: "https://our-story.example/?gift=birthday#memories" })).toBe("https://our-story.example/?gift=birthday#memories");
+  strictEqual(gatewayUrl({ href: "https://our-story.example/?gift=birthday#memories" }), "https://our-story.example/?gift=birthday#memories");
 });
