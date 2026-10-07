@@ -88,9 +88,8 @@ export function SecretGateway() {
           <p className="mx-auto mt-4 max-w-xs font-serif text-lg leading-relaxed text-rose-soft/85">Save or share this code to unlock our special world anytime.</p>
           <div className="gateway-frame relative mx-auto my-9 w-full max-w-[290px] rounded-lg p-5">
             <span className="gateway-flourish top-1 left-2" aria-hidden="true">❦</span><span className="gateway-flourish right-2 bottom-1 rotate-180" aria-hidden="true">❦</span>
-            <div ref={host} role="img" aria-label="Heart-centered QR code linking to our love story" className="gateway-code aspect-square w-full">
-              {!ready && <div className="flex h-full items-center justify-center text-qr-ink"><LoaderCircle className="size-6 animate-spin" aria-label="Preparing QR code" /></div>}
-            </div>
+            <div ref={host} role="img" aria-label="Heart-centered QR code linking to our love story" className="gateway-code aspect-square w-full" />
+            {!ready && <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-qr-ink"><LoaderCircle className="size-6 animate-spin" aria-label="Preparing QR code" /></div>}
           </div>
           <p className="mb-6 font-serif text-lg italic text-gold-soft/80">{keepsakeMessage}</p>
           <div className="flex flex-wrap justify-center gap-3">
