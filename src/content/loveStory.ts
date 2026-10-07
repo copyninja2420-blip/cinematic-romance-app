@@ -251,7 +251,7 @@ export const secret = {
 
 // WhatsApp reaction button — replace with your number: country code + number, digits only (e.g. "919876543210")
 export const whatsappReaction = {
-  phoneNumber: "910000000000",
+  phoneNumber: "919342073364",
   label: "Tell me your reaction 💬❤️",
   subtext: "Sends a direct message straight to my WhatsApp",
   message:
