@@ -12,6 +12,7 @@ import { Opening } from "@/components/love/Opening";
 import { Reasons } from "@/components/love/Reasons";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { ShareButton } from "@/components/love/ShareButton";
+import { SecretGateway } from "@/components/love/SecretGateway";
 import { WhatsAppReaction } from "@/components/love/WhatsAppReaction";
 import { Surprise } from "@/components/love/Surprise";
 import { Timeline } from "@/components/love/Timeline";
@@ -62,6 +63,7 @@ function LoveStoryPage() {
             <div data-companion="reasons"><Reasons /></div>
             <div data-companion="finale"><Finale /></div>
             <Companion />
+            <SecretGateway />
             <div className="flex flex-col items-center gap-5 pb-6">
               <ShareButton />
               <WhatsAppReaction />

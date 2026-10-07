@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the 3D companion in normal document flow beside the finale; this prevents it from blocking story text and controls.
+- Load QR rendering only in the browser and export its PNG through a canvas keepsake; this preserves SSR safety and avoids screenshot dependencies.

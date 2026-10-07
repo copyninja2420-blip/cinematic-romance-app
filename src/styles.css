@@ -159,6 +159,10 @@
   --warm: oklch(0.96 0.014 70);
   --ink: oklch(0.26 0.03 30);
   --signature-ink: oklch(0.34 0.14 18);
+  --qr-parchment: oklch(0.988 0.009 65);
+  --qr-ink: oklch(0.293 0.09 10);
+  --gateway-surface: oklch(0.16 0.04 355 / 90%);
+  --gateway-shadow: 0 20px 70px -30px color-mix(in oklab, var(--rose-glow) 35%, transparent);
 }
 
 @theme inline {
@@ -170,6 +174,8 @@
   --color-warm: var(--warm);
   --color-ink: var(--ink);
   --color-signature-ink: var(--signature-ink);
+  --color-qr-parchment: var(--qr-parchment);
+  --color-qr-ink: var(--qr-ink);
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-script: "Parisienne", cursive;
@@ -1173,3 +1179,28 @@
   25% { opacity: 1; }
   100% { opacity: 0; transform: rotate(var(--a)) translateY(-190px) scale(0.2); }
 }
+
+.secret-gateway {
+  background: var(--gateway-surface);
+  border: 1px solid color-mix(in oklab, var(--rose-glow) 20%, transparent);
+  box-shadow: var(--gateway-shadow), inset 0 0 0 5px var(--gateway-surface), inset 0 0 0 6px color-mix(in oklab, var(--gold-soft) 15%, transparent);
+  letter-spacing: 0;
+}
+.gateway-frame {
+  background: var(--qr-parchment);
+  border: 1px solid var(--gold-soft);
+  box-shadow: 0 10px 25px -15px var(--qr-ink);
+  animation: gateway-hover 6s ease-in-out infinite;
+}
+.gateway-code canvas { display: block; width: 100%; height: 100%; }
+.gateway-flourish { position: absolute; color: var(--gold-soft); font-size: 20px; line-height: 1; }
+.gateway-sparkles { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+.gateway-sparkles i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--gold-soft); box-shadow: 0 0 8px var(--gold-soft); animation: gateway-drift 9s ease-in-out infinite; }
+.gateway-sparkles i:nth-child(1) { left: 8%; top: 22%; }
+.gateway-sparkles i:nth-child(2) { left: 91%; top: 35%; animation-delay: -3s; }
+.gateway-sparkles i:nth-child(3) { left: 12%; top: 72%; animation-delay: -5s; }
+.gateway-sparkles i:nth-child(4) { left: 84%; top: 78%; animation-delay: -7s; }
+.gateway-sparkles i:nth-child(5) { left: 42%; top: 6%; animation-delay: -2s; }
+.gateway-sparkles i:nth-child(6) { left: 67%; top: 92%; animation-delay: -4s; }
+@keyframes gateway-hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes gateway-drift { 0%, 100% { opacity: 0.15; transform: translate(0, 0); } 50% { opacity: 0.8; transform: translate(7px, -16px); } }
