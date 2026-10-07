@@ -24,7 +24,7 @@ export function SecretGateway() {
         const styles = getComputedStyle(document.documentElement);
         const wine = styles.getPropertyValue("--qr-ink").trim();
         const cream = styles.getPropertyValue("--qr-parchment").trim();
-        const rose = styles.getPropertyValue("--rose-glow").trim();
+        const rose = styles.getPropertyValue("--qr-heart").trim();
         const heart = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="49" fill="${cream}"/><path d="M50 79C-6 43 22 8 50 32C78 8 106 43 50 79Z" fill="${rose}"/></svg>`;
         const code = new QR({
           width: 1024, height: 1024, type: "canvas", margin: 70,
@@ -80,7 +80,7 @@ export function SecretGateway() {
 
   return (
     <section aria-labelledby="gateway-title" className="px-5 py-16 sm:py-24">
-      <div className="secret-gateway relative mx-auto max-w-lg rounded-3xl px-5 py-10 text-center sm:px-10">
+      <div className="secret-gateway relative mx-auto max-w-lg rounded-3xl px-5 pt-20 pb-10 text-center sm:px-10 sm:pt-10">
         <div className="gateway-sparkles" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
         <div className="relative">
           <p className="mb-4 flex items-center justify-center gap-3 text-xs text-gold-soft"><span className="h-px w-10 bg-gold-soft/30" /><Heart className="size-4" /><span className="h-px w-10 bg-gold-soft/30" /></p>
