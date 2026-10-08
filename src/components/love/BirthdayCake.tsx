@@ -11,7 +11,6 @@ export function BirthdayCake({ onEnter }: { onEnter: () => void }) {
   const [leaving, setLeaving] = useState(false);
   const [mounted, setMounted] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const enterRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     setMounted(true);
     return () => { if (timer.current) clearTimeout(timer.current); };
@@ -53,7 +52,7 @@ export function BirthdayCake({ onEnter }: { onEnter: () => void }) {
           </div>
           {phase === "lit" ? <Button onClick={blow} className="btn-love h-auto w-auto whitespace-normal px-6 py-4">{birthdayCake.blow}</Button> : <>
             {phase === "blown" && <Button variant="ghost" onClick={() => setPhase((current) => nextCakePhase(current, "cut"))} className="h-11 text-gold-soft hover:bg-gold-soft/10 hover:text-gold-soft"><Utensils />{birthdayCake.cut}</Button>}
-            <Button ref={enterRef} onClick={enter} disabled={leaving} className="btn-love h-auto w-auto whitespace-normal px-7 py-4">{birthdayCake.enter}<ArrowRight /></Button>
+            <Button onClick={enter} disabled={leaving} className="btn-love h-auto w-auto whitespace-normal px-7 py-4">{birthdayCake.enter}<ArrowRight /></Button>
           </>}
         </div>
       </div>

@@ -273,7 +273,7 @@
 .birthday-cake-stage { position: relative; width: min(360px, 100%); aspect-ratio: 1; margin-top: 12px; flex-shrink: 0; }
 .birthday-cake-image { width: 100%; height: 100%; object-fit: contain; filter: var(--cake-shadow); transition: transform .6s ease; }
 .cake-is-cut .birthday-cake-image { transform: rotate(-2deg); }
-.birthday-candle { position: absolute; top: 11%; left: 50%; width: 12px; height: 46px; transform: translateX(-50%); }
+.birthday-candle { position: absolute; top: 4%; left: 50%; width: 12px; height: 46px; transform: translateX(-50%); }
 .birthday-candle-body { position: absolute; bottom: 0; width: 12px; height: 38px; border-radius: 3px 3px 1px 1px; background: repeating-linear-gradient(135deg, var(--warm) 0 7px, var(--gold-soft) 7px 11px); }
 .birthday-candle-wick { position: absolute; width: 2px; height: 8px; background: var(--ink); left: 5px; top: 0; }
 .birthday-flame-target { position: absolute; width: 56px; height: 60px; top: -48px; left: -22px; padding: 0; border-radius: 50%; }
