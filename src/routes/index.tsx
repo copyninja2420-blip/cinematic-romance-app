@@ -8,7 +8,7 @@ import { HeartTap } from "@/components/love/HeartTap";
 import { Hero } from "@/components/love/Hero";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
-import { Opening } from "@/components/love/Opening";
+import { BirthdayCake } from "@/components/love/BirthdayCake";
 import { Reasons } from "@/components/love/Reasons";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { ShareButton } from "@/components/love/ShareButton";
@@ -45,7 +45,7 @@ function LoveStoryPage() {
 
   return (
     <main className="relative min-h-[100svh] overflow-x-hidden bg-background">
-      {!opened && <Opening onOpen={() => setOpened(true)} />}
+      {!opened && <BirthdayCake onEnter={() => { window.scrollTo(0, 0); setOpened(true); }} />}
 
       <MusicToggle autoplay />
       <HeartTap />

@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Add the full-screen cake between passcode and story, keeping the same music player mounted.
+- [x] Verify candle, optional cutting, progression and mobile layout.
+
 - [x] Contain the 3D companion in a dedicated finale slot.
 - [x] Clear persistent music controls from expanded and full-screen content.
 - [x] Improve letter signature contrast.

@@ -45,6 +45,16 @@ export const opening = {
   button: "ENTER OUR STORY ❤️",
 };
 
+export const birthdayCake = {
+  title: "A Birthday Wish Just For You",
+  subtitle: "Close your eyes, make your deepest wish, and blow out the candle...",
+  blow: "Blow Out the Candle 🎂✨",
+  cut: "Tap to cut the cake 🍰",
+  wish: "Your wish is on its way to the stars… ✨",
+  message: "Happy Birthday, My Love! May every prayer of yours come true ❤️",
+  enter: "Enter Our World ❤️",
+};
+
 
 export const hero = {
   title: "Happy Birthday, My Love ❤️",
