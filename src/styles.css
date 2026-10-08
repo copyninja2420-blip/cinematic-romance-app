@@ -164,6 +164,11 @@
   --qr-heart: oklch(0.58 0.22 22);
   --gateway-surface: oklch(0.16 0.04 355 / 90%);
   --gateway-shadow: 0 20px 70px -30px color-mix(in oklab, var(--rose-glow) 35%, transparent);
+  --cake-flame-core: oklch(0.98 0.07 95);
+  --cake-flame-edge: oklch(0.78 0.18 60);
+  --cake-welcome-glow: radial-gradient(ellipse at 50% 46%, color-mix(in oklab, var(--burgundy) 65%, transparent), transparent 70%);
+  --cake-flame-shadow: 0 0 20px 5px color-mix(in oklab, var(--gold-soft) 35%, transparent);
+  --cake-shadow: drop-shadow(0 20px 20px color-mix(in oklab, var(--background) 70%, transparent));
 }
 
 @theme inline {
@@ -260,6 +265,36 @@
     transparent 65%
   );
 }
+
+/* ── birthday welcome ── */
+.birthday-welcome { position: relative; min-height: 100svh; display: grid; place-items: center; background: var(--cake-welcome-glow), var(--background); padding: max(100px, env(safe-area-inset-top)) 24px max(28px, env(safe-area-inset-bottom)); overflow: hidden; transition: opacity .5s ease, transform .5s ease; }
+.birthday-leaving { opacity: 0; transform: translateY(-12px); pointer-events: none; }
+.cake-welcome-content { position: relative; z-index: 1; width: 100%; max-width: 620px; display: flex; align-items: center; flex-direction: column; animation: fade-slow .65s ease both; }
+.birthday-cake-stage { position: relative; width: min(360px, 100%); aspect-ratio: 1; margin-top: 12px; flex-shrink: 0; }
+.birthday-cake-image { width: 100%; height: 100%; object-fit: contain; filter: var(--cake-shadow); transition: transform .6s ease; }
+.cake-is-cut .birthday-cake-image { transform: rotate(-2deg); }
+.birthday-candle { position: absolute; top: 11%; left: 50%; width: 12px; height: 46px; transform: translateX(-50%); }
+.birthday-candle-body { position: absolute; bottom: 0; width: 12px; height: 38px; border-radius: 3px 3px 1px 1px; background: repeating-linear-gradient(135deg, var(--warm) 0 7px, var(--gold-soft) 7px 11px); }
+.birthday-candle-wick { position: absolute; width: 2px; height: 8px; background: var(--ink); left: 5px; top: 0; }
+.birthday-flame-target { position: absolute; width: 56px; height: 60px; top: -48px; left: -22px; padding: 0; border-radius: 50%; }
+.birthday-flame-target:hover { background: transparent; }
+.birthday-flame { display: block; width: 15px; height: 28px; border-radius: 70% 30% 60% 40%; background: radial-gradient(ellipse at 50% 80%, var(--cake-flame-core), var(--gold-soft) 45%, var(--cake-flame-edge)); box-shadow: var(--cake-flame-shadow); transform-origin: center bottom; animation: birthday-flicker .9s ease-in-out infinite alternate; pointer-events: none; }
+.birthday-smoke { position: absolute; left: -6px; top: -34px; width: 24px; height: 34px; pointer-events: none; }
+.birthday-smoke i { position: absolute; width: 12px; height: 20px; border-radius: 50%; background: color-mix(in oklab, var(--warm) 25%, transparent); opacity: 0; animation: birthday-smoke 1.8s ease-out both; }
+.birthday-smoke i:nth-child(2) { animation-delay: .2s; left: 8px; }.birthday-smoke i:nth-child(3) { animation-delay: .4s; left: 3px; }
+.birthday-cut-mark { position: absolute; left: 55%; top: 43%; height: 41%; width: 2px; background: var(--burgundy); transform: rotate(-8deg); transform-origin: top; animation: birthday-cut .65s ease both; pointer-events: none; }
+.birthday-cake-actions { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; min-height: 174px; }
+.cake-wish-message { display: grid; place-items: center; min-height: 60px; max-width: 440px; }
+.cake-celebration { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.cake-celebration > span { position: absolute; top: -24px; animation: birthday-confetti 3.5s ease-out both; }
+.cake-confetti { width: 5px; height: 10px; background: var(--gold-soft); }.cake-confetti:nth-child(even) { background: var(--rose-soft); }
+.cake-heart { font-size: 23px; color: var(--rose-glow); }
+@keyframes birthday-flicker { from { transform: rotate(-5deg) scale(.95, 1); opacity: .85; } to { transform: rotate(5deg) scale(1.05, .92); opacity: 1; } }
+@keyframes birthday-smoke { 0% { opacity: .7; transform: translateY(12px) scale(.5); } 100% { opacity: 0; transform: translate(14px, -52px) scale(1.8); } }
+@keyframes birthday-confetti { 0% { opacity: 0; transform: translate3d(0,-20px,0) rotate(0); } 10% { opacity: 1; } 100% { opacity: 0; transform: translate3d(var(--confetti-drift),100svh,0) rotate(280deg); } }
+@keyframes birthday-cut { from { transform: rotate(-8deg) scaleY(0); } to { transform: rotate(-8deg) scaleY(1); } }
+@media (max-width: 640px) { .birthday-cake-stage { width: min(300px, 100%); } }
+@media (prefers-reduced-motion: reduce) { .birthday-welcome, .birthday-cake-image { transition: none; }.cake-welcome-content, .birthday-flame, .birthday-smoke i, .cake-celebration > span, .birthday-cut-mark { animation: none; }.cake-celebration { display: none; } }
 
 /* ── buttons ── */
 @utility btn-love {

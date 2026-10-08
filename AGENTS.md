@@ -11,3 +11,4 @@
 
 - Keep the 3D companion in normal document flow beside the finale; this prevents it from blocking story text and controls.
 - Load QR rendering only in the browser and export its PNG through a canvas keepsake; this preserves SSR safety and avoids screenshot dependencies.
+- Keep the cake welcome and story as sequential states in the index page with one mounted music player; this avoids audio interruption between the birthday welcome and story.
