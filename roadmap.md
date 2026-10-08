@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Insert the full-screen love scanner after required cake cutting and Next.
+- [ ] Verify three-second hold, early-release reset, result, uninterrupted music and mobile layout.
+
 - [x] Add the full-screen cake between passcode and story, keeping the same music player mounted.
 - [x] Verify candle, optional cutting, progression and mobile layout.
 
