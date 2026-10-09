@@ -9,6 +9,7 @@ import { Hero } from "@/components/love/Hero";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { BirthdayCake } from "@/components/love/BirthdayCake";
+import { LoveMeterScreen } from "@/components/love/LoveMeterScreen";
 import { Reasons } from "@/components/love/Reasons";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { ShareButton } from "@/components/love/ShareButton";
@@ -21,17 +22,15 @@ import { couple } from "@/content/loveStory";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Our Love Story — From My Heart to Yours ❤️" },
+      { title: "Our Love Story — From My Heart to Yours" },
       {
         name: "description",
-        content:
-          "A private, cinematic birthday love letter: our story, our memories, and every reason I would choose you again.",
+        content: "A private, cinematic birthday love letter.",
       },
-      { property: "og:title", content: "Our Love Story — From My Heart to Yours ❤️" },
+      { property: "og:title", content: "Our Love Story" },
       {
         property: "og:description",
-        content:
-          "A romantic interactive birthday surprise — our timeline, memory gallery, sealed love letter and one last surprise.",
+        content: "A romantic interactive birthday surprise.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -41,43 +40,64 @@ export const Route = createFileRoute("/")({
 });
 
 function LoveStoryPage() {
-  const [opened, setOpened] = useState(false);
+  const [stage, setStage] = useState<"cake" | "lovemeter" | "story">("cake");
 
   return (
-    <main className="relative min-h-[100svh] overflow-x-hidden bg-background">
-      {!opened && <BirthdayCake onEnter={() => { window.scrollTo(0, 0); setOpened(true); }} />}
+    <main className="relative min-h-[100svh] overflow-x-hidden bg-[#14030a] text-white">
+      {/* Stage 1: Birthday Cake */}
+      {stage === "cake" && (
+        <BirthdayCake onEnter={() => setStage("lovemeter")} />
+      )}
 
-      <MusicToggle autoplay />
-      <HeartTap />
+      {/* Stage 2: Love Meter & Fingerprint Scan */}
+      {stage === "lovemeter" && (
+        <LoveMeterScreen onContinue={() => setStage("story")} />
+      )}
 
-      {opened && (
+      {/* Stage 3: The Full Love Story Experience */}
+      {stage === "story" && (
         <>
+          <MusicToggle autoplay />
+          <HeartTap />
           <Atmosphere particles={20} hearts={6} />
-          <div className="relative z-10 animate-fade-slow">
-            <div data-companion="hero"><Hero /></div>
-            <div data-companion="timeline"><Timeline /></div>
-            <div data-companion="gallery"><Gallery /></div>
-            <div data-companion="letter"><LoveLetter /></div>
-            <RomanticMilestones />
-            <div data-companion="surprise"><Surprise /></div>
-            <div data-companion="reasons"><Reasons /></div>
-            <div data-companion="finale"><Finale /></div>
-            <Companion />
-            <SecretGateway />
-            <div className="flex flex-col items-center gap-5 pb-6">
-              <ShareButton />
-              <WhatsAppReaction />
+
+          <div className="relative z-10 animate-fade-in">
+            <div data-companion="hero">
+              <Hero />
             </div>
-            <footer className="pb-44 text-center">
-              <p className="script text-lg text-gold-soft/80">
-                For{" "}
-                <span className="romantic name-shimmer text-3xl">
-                  {couple.wifeName}
-                </span>
-                , with all my heart ❤
-              </p>
-            </footer>
+
+            <div data-companion="timeline">
+              <Timeline />
+            </div>
+
+            <div data-companion="gallery">
+              <Gallery />
+            </div>
+
+            <div data-companion="letter">
+              <LoveLetter />
+            </div>
+
+            <RomanticMilestones />
+
+            <div data-companion="surprise">
+              <Surprise />
+            </div>
+
+            <div data-companion="reasons">
+              <Reasons />
+            </div>
+
+            <div data-companion="finale">
+              <Finale />
+            </div>
+
+            <SecretGateway />
+            <WhatsAppReaction />
+            <ShareButton />
           </div>
+
+          <Companion />
         </>
       )}
     </main>
