@@ -1,32 +1,3 @@
-import { playlist as bundledPlaylist, type Track } from "@/content/loveStory";
-```[span_0](start_span)[span_0](end_span)
-
-Your component imports `Track` with `{ src, title }`[span_1](start_span)[span_1](end_span), but in `MusicToggle.tsx` (lines 45–67), it expects `track.src` and `track.title`[span_2](start_span)[span_2](end_span).
-
-More importantly, look at lines 47–54 and 60–65:
-```tsx
-useEffect(() => {
-  if (!autoplay || !audioRef.current) return;
-  audioRef.current.volume = volume;
-  audioRef.current
-    .play()
-    .then(() => setPlaying(true))
-    .catch(() => setPlaying(false));
-}, [autoplay]);
-```[span_3](start_span)[span_3](end_span)
-
-On mobile devices, this component is attempting to use **IndexedDB / storage** (`listStoredTracks` from `@/lib/musicLibrary`) and runs an unrestricted `useEffect` that calls `.load()` on `audioRef.current` before the user interacts[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span). On mobile browsers, if the IndexedDB fails or if audio elements fire unsupported events during SSR/initial render, the whole component boundary crashes[span_6](start_span)[span_6](end_span)[span_7](start_span)[span_7](end_span).
-
-Here is a bulletproof, cleaned-up **`src/components/love/MusicToggle.tsx`** that:
-1. Safely checks if `track` exists before reading `.src` or `.title` (preventing undefined crashes)[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span).
-2. Handles mobile autoplay gracefully with `catch` blocks[span_10](start_span)[span_10](end_span).
-3. Keeps user track uploads, playlist cycling, volume, and next song controls completely intact[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span)[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span).
-
----
-
-### Replace all code in `src/components/love/MusicToggle.tsx`:
-
-```tsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Music, Plus, SkipForward, Trash2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -278,4 +249,4 @@ export function MusicToggle({ autoplay = false }: { autoplay?: boolean }) {
 }
 
 export default MusicToggle;
-          
+    
