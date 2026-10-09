@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-// Gateway & Stages
-import { SecretGateway } from "@/components/love/SecretGateway";
+// Gateway & Interactive Stages
+import { Opening } from "@/components/love/Opening";
 import { BirthdayCake } from "@/components/love/BirthdayCake";
 import { LoveMeterScreen } from "@/components/love/LoveMeterScreen";
 import { FlamesScreen } from "@/components/love/FlamesScreen";
 
-// Story Sections
+// Romantic Story Sections
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { Hero } from "@/components/love/Hero";
-import { Opening } from "@/components/love/Opening";
 import { Timeline } from "@/components/love/Timeline";
 import { Gallery } from "@/components/love/Gallery";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
 import { Reasons } from "@/components/love/Reasons";
 import { LoveLetter } from "@/components/love/LoveLetter";
+import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
 import { Finale } from "@/components/love/Finale";
 
@@ -28,27 +28,27 @@ function Index() {
   const [unlocked, setUnlocked] = useState(false);
   const [stage, setStage] = useState<"cake" | "lovemeter" | "flames" | "story">("cake");
 
-  // Step 1: Passcode Screen
+  // Stage 1: Passcode Entry Screen
   if (!unlocked) {
-    return <SecretGateway onUnlock={() => setUnlocked(true)} />;
+    return <Opening onUnlock={() => setUnlocked(true)} />;
   }
 
-  // Step 2: Birthday Cake
+  // Stage 2: Birthday Cake
   if (stage === "cake") {
     return <BirthdayCake onContinue={() => setStage("lovemeter")} />;
   }
 
-  // Step 3: Love Scanner
+  // Stage 3: Love Scanner
   if (stage === "lovemeter") {
     return <LoveMeterScreen onContinue={() => setStage("flames")} />;
   }
 
-  // Step 4: FLAMES Oracle Stage
+  // Stage 4: FLAMES Oracle
   if (stage === "flames") {
     return <FlamesScreen onContinue={() => setStage("story")} />;
   }
 
-  // Step 5: The Full Romantic Story
+  // Stage 5: Full Cinematic Love Story Experience
   return (
     <div className="min-h-screen bg-[#0d0107] text-[#fff1f2] relative selection:bg-rose-900 selection:text-amber-100 overflow-x-hidden">
       <Atmosphere />
@@ -56,12 +56,13 @@ function Index() {
 
       <main className="relative z-10 flex flex-col gap-16 md:gap-24">
         <Hero />
-        <Opening />
         <Timeline />
         <Gallery />
         <RomanticMilestones />
         <Reasons />
         <LoveLetter />
+        {/* Keepsake QR code card placed elegantly near the end */}
+        <SecretGateway />
         <Surprise />
         <Finale />
       </main>
