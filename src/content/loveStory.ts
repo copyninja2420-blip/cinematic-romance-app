@@ -10,7 +10,6 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3";
 import faithLove from "@/assets/music/faith-love-remix.mp3";
-
 export const couple = {
   wifeName: "My Love",
   husbandName: "Yours Forever",
@@ -21,13 +20,22 @@ export const couple = {
 export type Track = { src: string; title: string };
 
 export const playlist: Track[] = [
-  { src: deserveLoved, title: "Deserve to Be Loved" },
-  { src: faithLove, title: "Faith - Love Remix" },
-  { src: memoryAway, title: "A Memory Away" },
+  {
+    src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3",
+    title: "A Gentle Love",
+  },
+  {
+    src: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3",
+    title: "Sweet Memories",
+  },
+  {
+    src: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77c30.mp3",
+    title: "Forever With You",
+  },
 ];
 
 /** kept for backwards compatibility */
-export const music = playlist[0] ?? { src: "", title: "" };
+export const music = playlist[0];
 
 export const opening = {
   greeting: "Hey, My Love...",
@@ -242,4 +250,4 @@ export const whatsappReaction = {
   subtext: "Sends a direct message straight to my WhatsApp",
   message: "I just finished reading your surprise... and I love you so much ❤️🥺",
 };
-    
+  
