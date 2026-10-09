@@ -46,16 +46,18 @@ function Chapter({ index }: ChapterProps) {
           }`}
         >
           <div className="overflow-hidden">
-            <div className="photo-slot mt-4">
+            <div className="mt-4 overflow-hidden rounded-2xl border border-warm/20 bg-black/40 shadow-inner">
               {chapter.image ? (
                 <img
                   src={chapter.image}
                   alt={chapter.label}
                   loading="lazy"
-                  className="size-full object-cover object-top"
+                  className="w-full h-auto max-h-[420px] object-contain mx-auto rounded-xl"
                 />
               ) : (
-                <span>[ photo of this moment ]</span>
+                <div className="py-12 text-center text-warm/40 text-sm">
+                  [ photo of this moment ]
+                </div>
               )}
             </div>
             <p className="mt-4 text-sm leading-relaxed text-warm/80 whitespace-pre-line">
@@ -83,4 +85,3 @@ export function Timeline() {
 }
 
 export default Timeline;
-            
