@@ -15,7 +15,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
     setIsScanning(true);
 
     const startTime = Date.now();
-    const duration = 2800; // 2.8s hold to measure
+    const duration = 2800; // 2.8 seconds hold
 
     timerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -23,7 +23,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
       setProgress(pct);
 
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate(30);
+        navigator.vibrate(35);
       }
 
       if (pct >= 100) {
@@ -31,7 +31,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
         setIsScanning(false);
         setScanComplete(true);
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          navigator.vibrate([100, 60, 150]);
+          navigator.vibrate([100, 80, 160]);
         }
       }
     }, 40);
@@ -46,39 +46,43 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
 
   return (
     <div className="min-h-screen w-full bg-[#14030a] text-white flex flex-col items-center justify-between py-12 px-6 relative overflow-hidden select-none">
-      {/* Ambient background bloom */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-rose-900/20 rounded-full blur-3xl pointer-events-none" />
+      {/* Soft warm ambient bloom */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-rose-900/25 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
       <div className="text-center z-10 mt-2">
-        <p className="text-[10px] uppercase tracking-widest text-amber-200/80 font-medium mb-1">
+        <p className="text-[10px] uppercase tracking-widest text-amber-200/80 font-medium mb-1.5">
           Soul Synchronization
         </p>
         <h2 className="text-3xl font-serif italic text-rose-100 mb-2">The Love Scanner</h2>
-        <p className="text-xs text-rose-200/70 font-serif max-w-xs mx-auto leading-relaxed">
+        <p className="text-xs text-rose-200/75 font-serif max-w-xs mx-auto leading-relaxed">
           {scanComplete
-            ? 'Your biometric resonance is permanent and infinite.'
-            : 'Hold your thumb to synchronize our heartbeats...'}
+            ? 'Two souls harmonized into absolute eternity.'
+            : 'Press and hold below to synchronize our heartbeats...'}
         </p>
       </div>
 
-      {/* Center Stage: Scanning Visualizer / Infinity Result */}
+      {/* Centerpiece: Glowing Heart Visualizer / Scanned Affinity Card */}
       <div className="flex flex-col items-center justify-center my-auto z-10 w-full max-w-sm">
         {!scanComplete ? (
           <div className="flex flex-col items-center animate-fade-in">
-            {/* Visual biometric pulse orb */}
-            <div className="relative w-40 h-40 flex items-center justify-center">
+            {/* Concentric heart pulse rings */}
+            <div className="relative w-44 h-44 flex items-center justify-center">
               <div
-                className={`absolute inset-0 rounded-full border border-rose-500/20 transition-all duration-700 ${
+                className={`absolute inset-0 rounded-full border border-rose-400/25 transition-all duration-700 ${
                   isScanning ? 'scale-125 opacity-100 animate-ping' : 'scale-100 opacity-40'
                 }`}
               />
               <div
-                className={`w-28 h-28 rounded-full bg-gradient-to-tr from-rose-950 via-[#260515] to-[#14030a] border border-amber-300/30 flex items-center justify-center shadow-[0_0_40px_rgba(244,63,94,0.25)] transition-transform duration-300 ${
-                  isScanning ? 'scale-110 shadow-[0_0_50px_rgba(244,63,94,0.6)]' : ''
+                className={`w-32 h-32 rounded-full bg-gradient-to-b from-[#2e071a] via-[#1a030f] to-[#12020a] border border-amber-300/35 flex items-center justify-center shadow-[0_0_35px_rgba(244,63,94,0.3)] transition-transform duration-300 ${
+                  isScanning ? 'scale-105 shadow-[0_0_55px_rgba(244,63,94,0.7)]' : ''
                 }`}
               >
-                <span className="text-3xl filter drop-shadow-[0_0_12px_#fb7185] animate-pulse">
+                <span
+                  className={`text-4xl filter drop-shadow-[0_0_14px_rgba(244,63,94,0.8)] transition-all duration-300 ${
+                    isScanning ? 'animate-pulse scale-110' : 'opacity-90'
+                  }`}
+                >
                   {isScanning ? '💓' : '🤍'}
                 </span>
               </div>
@@ -87,11 +91,11 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
             <p className="text-xs font-serif text-amber-200/80 mt-6 tracking-wide italic">
               {isScanning
                 ? `Synchronizing Resonance... ${Math.round(progress)}%`
-                : 'Place thumb on scanner below'}
+                : 'Touch & hold the scanner capsule below'}
             </p>
           </div>
         ) : (
-          /* Scanned Result Display */
+          /* Scanned Affinity Result */
           <div className="w-full p-6 rounded-3xl bg-[#240816]/95 border border-rose-400/40 text-center shadow-[0_0_35px_rgba(244,63,94,0.35)] animate-fade-in">
             <span className="text-3xl mb-2 inline-block animate-pulse">💖</span>
             <p className="text-[10px] uppercase tracking-widest text-amber-200 font-semibold mb-1">
@@ -108,7 +112,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
         )}
       </div>
 
-      {/* Bottom Area: Full Fingerprint Scanner Button */}
+      {/* Romantic Capsule Scanner Button */}
       <div className="w-full max-w-sm z-10 mb-4 px-2">
         {!scanComplete ? (
           <div
@@ -116,33 +120,33 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
             onMouseUp={cancelScan}
             onTouchStart={startScan}
             onTouchEnd={cancelScan}
-            className={`relative group w-full py-4 px-6 rounded-2xl cursor-pointer overflow-hidden transition-all duration-300 border active:scale-[0.98] ${
+            className={`relative group w-full py-3.5 px-5 rounded-full cursor-pointer overflow-hidden transition-all duration-300 border active:scale-[0.98] ${
               isScanning
-                ? 'bg-gradient-to-r from-[#3e0a1f] via-[#5c0f2e] to-[#3e0a1f] border-rose-400 shadow-[0_0_35px_rgba(244,63,94,0.5)]'
-                : 'bg-gradient-to-r from-[#1c040e] via-[#2a0717] to-[#1c040e] border-amber-300/40 shadow-[0_0_20px_rgba(0,0,0,0.6)]'
+                ? 'bg-gradient-to-r from-[#40081d] via-[#610d30] to-[#40081d] border-rose-300/60 shadow-[0_0_35px_rgba(244,63,94,0.55)]'
+                : 'bg-gradient-to-r from-[#1c040e] via-[#2d0718] to-[#1c040e] border-amber-300/40 shadow-[0_0_25px_rgba(0,0,0,0.6)]'
             }`}
           >
-            {/* Progress Fill Background */}
+            {/* Progress Sweep */}
             <div
-              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-rose-800/80 via-rose-600/80 to-amber-600/80 transition-all duration-75"
+              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-rose-800/85 via-rose-600/85 to-amber-600/85 transition-all duration-75"
               style={{ width: `${progress}%` }}
             />
 
-            {/* Glowing Laser Scan Line */}
+            {/* Glowing sweep beam */}
             {isScanning && (
               <div
-                className="absolute top-0 bottom-0 w-2 bg-white blur-[2px] shadow-[0_0_12px_#fff] transition-all duration-75"
+                className="absolute top-0 bottom-0 w-2.5 bg-white blur-[2px] shadow-[0_0_14px_#fff] transition-all duration-75"
                 style={{ left: `${progress}%` }}
               />
             )}
 
-            {/* Button Interior Layout */}
+            {/* Capsule Content */}
             <div className="relative z-10 flex items-center justify-between">
-              {/* Left: Fingerprint biometric emblem */}
-              <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center shrink-0 shadow-inner">
+              {/* Circular Fingerprint Emblem */}
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-black/60 to-rose-950/60 border border-amber-300/30 flex items-center justify-center shrink-0 shadow-inner">
                 <svg
-                  className={`w-7 h-7 transition-colors duration-200 ${
-                    isScanning ? 'text-rose-300 animate-pulse' : 'text-amber-200/80'
+                  className={`w-6 h-6 transition-colors duration-200 ${
+                    isScanning ? 'text-rose-300 animate-pulse' : 'text-amber-200/85'
                   }`}
                   fill="currentColor"
                   viewBox="0 0 24 24"
@@ -151,25 +155,25 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
                 </svg>
               </div>
 
-              {/* Center & Right labels */}
+              {/* Romantic Typography */}
               <div className="flex-1 px-4 text-left">
-                <p className="text-[10px] tracking-widest uppercase text-amber-200/80 font-medium">
-                  {isScanning ? 'Scanning In Progress' : 'Biometric Auth'}
+                <p className="text-[10px] tracking-widest uppercase text-amber-200 font-medium">
+                  {isScanning ? 'Synchronizing Souls' : 'Heart Resonance'}
                 </p>
-                <p className="text-sm font-serif font-medium text-rose-100">
-                  {isScanning ? `${Math.round(progress)}% Synchronized` : 'Press & Hold To Scan'}
+                <p className="text-xs font-serif italic text-rose-100">
+                  {isScanning ? `${Math.round(progress)}% harmonized` : 'Hold thumb to unite our hearts'}
                 </p>
               </div>
 
-              {/* Status pulse indicator */}
-              <div className="w-2.5 h-2.5 rounded-full bg-rose-400 animate-ping mr-1" />
+              {/* Gentle heartbeat beacon */}
+              <div className="w-2 h-2 rounded-full bg-rose-400 animate-ping mr-2" />
             </div>
           </div>
         ) : (
           /* Transition Button to Story */
           <button
             onClick={onContinue}
-            className="relative group w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-[#881337] via-[#e11d48] to-[#9f1239] text-amber-100 font-serif text-xs tracking-widest uppercase border border-amber-300/50 shadow-[0_0_35px_rgba(225,29,72,0.5),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:scale-[1.02] active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer"
+            className="relative group w-full py-4 px-8 rounded-full bg-gradient-to-r from-[#881337] via-[#e11d48] to-[#9f1239] text-amber-100 font-serif text-xs tracking-widest uppercase border border-amber-300/40 shadow-[0_0_35px_rgba(225,29,72,0.5),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:scale-[1.02] active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer"
           >
             <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
             <span className="relative z-10 flex items-center justify-center gap-2 font-medium">
@@ -183,3 +187,4 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
     </div>
   );
 };
+              
