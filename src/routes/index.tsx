@@ -1,105 +1,72 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Atmosphere } from "@/components/love/Atmosphere";
-import { Companion } from "@/components/love/Companion";
-import { Finale } from "@/components/love/Finale";
-import { Gallery } from "@/components/love/Gallery";
-import { HeartTap } from "@/components/love/HeartTap";
-import { Hero } from "@/components/love/Hero";
-import { LoveLetter } from "@/components/love/LoveLetter";
-import { MusicToggle } from "@/components/love/MusicToggle";
+import { createFileRoute } from "@tanstack/react-router";
+import { PasscodeScreen } from "@/components/love/PasscodeScreen";
 import { BirthdayCake } from "@/components/love/BirthdayCake";
 import { LoveMeterScreen } from "@/components/love/LoveMeterScreen";
-import { Reasons } from "@/components/love/Reasons";
+import { FlamesScreen } from "@/components/love/FlamesScreen";
+import { Hero } from "@/components/love/Hero";
+import { ChapterNav } from "@/components/love/ChapterNav";
+import { StoryTimeline } from "@/components/love/StoryTimeline";
+import { PhotoGallery } from "@/components/love/PhotoGallery";
 import { RomanticMilestones } from "@/components/love/RomanticMilestones";
-import { ShareButton } from "@/components/love/ShareButton";
-import { SecretGateway } from "@/components/love/SecretGateway";
-import { WhatsAppReaction } from "@/components/love/WhatsAppReaction";
+import { LoveLetter } from "@/components/love/LoveLetter";
+import { ReasonsWhy } from "@/components/love/ReasonsWhy";
+import { FloatingHearts } from "@/components/love/FloatingHearts";
+import { MusicPlayer } from "@/components/love/MusicPlayer";
 import { Surprise } from "@/components/love/Surprise";
-import { Timeline } from "@/components/love/Timeline";
-import { couple } from "@/content/loveStory";
+import { Footer } from "@/components/love/Footer";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Our Love Story — From My Heart to Yours" },
-      {
-        name: "description",
-        content: "A private, cinematic birthday love letter.",
-      },
-      { property: "og:title", content: "Our Love Story" },
-      {
-        property: "og:description",
-        content: "A romantic interactive birthday surprise.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: LoveStoryPage,
+  component: Index,
 });
 
-function LoveStoryPage() {
-  const [stage, setStage] = useState<"cake" | "lovemeter" | "story">("cake");
+function Index() {
+  const [unlocked, setUnlocked] = useState(false);
+  const [stage, setStage] = useState<"cake" | "lovemeter" | "flames" | "story">("cake");
 
+  // Step 1: Initial Passcode Lock Screen
+  if (!unlocked) {
+    return <PasscodeScreen onUnlock={() => setUnlocked(true)} />;
+  }
+
+  // Step 2: Birthday Cake Interactive Stage
+  if (stage === "cake") {
+    return <BirthdayCake onContinue={() => setStage("lovemeter")} />;
+  }
+
+  // Step 3: Biometric Love Scanner Stage
+  if (stage === "lovemeter") {
+    return <LoveMeterScreen onContinue={() => setStage("flames")} />;
+  }
+
+  // Step 4: Nostalgic FLAMES Oracle Stage
+  if (stage === "flames") {
+    return <FlamesScreen onContinue={() => setStage("story")} />;
+  }
+
+  // Step 5: Full Love Story Experience
   return (
-    <main className="relative min-h-[100svh] overflow-x-hidden bg-[#14030a] text-white">
-      {/* Stage 1: Birthday Cake */}
-      {stage === "cake" && (
-        <BirthdayCake onEnter={() => setStage("lovemeter")} />
-      )}
+    <div className="min-h-screen bg-[#0d0107] text-[#fff1f2] relative selection:bg-rose-900 selection:text-amber-100 overflow-x-hidden">
+      {/* Floating Interactive Hearts Background */}
+      <FloatingHearts />
 
-      {/* Stage 2: Love Meter & Fingerprint Scan */}
-      {stage === "lovemeter" && (
-        <LoveMeterScreen onContinue={() => setStage("story")} />
-      )}
+      {/* Persistent Audio Player */}
+      <MusicPlayer />
 
-      {/* Stage 3: The Full Love Story Experience */}
-      {stage === "story" && (
-        <>
-          <MusicToggle autoplay />
-          <HeartTap />
-          <Atmosphere particles={20} hearts={6} />
-
-          <div className="relative z-10 animate-fade-in">
-            <div data-companion="hero">
-              <Hero />
-            </div>
-
-            <div data-companion="timeline">
-              <Timeline />
-            </div>
-
-            <div data-companion="gallery">
-              <Gallery />
-            </div>
-
-            <div data-companion="letter">
-              <LoveLetter />
-            </div>
-
-            <RomanticMilestones />
-
-            <div data-companion="surprise">
-              <Surprise />
-            </div>
-
-            <div data-companion="reasons">
-              <Reasons />
-            </div>
-
-            <div data-companion="finale">
-              <Finale />
-            </div>
-
-            <SecretGateway />
-            <WhatsAppReaction />
-            <ShareButton />
-          </div>
-
-          <Companion />
-        </>
-      )}
-    </main>
+      {/* Story Sections */}
+      <main className="relative z-10 flex flex-col gap-16 md:gap-24">
+        <Hero />
+        <ChapterNav />
+        <StoryTimeline />
+        <PhotoGallery />
+        <RomanticMilestones />
+        <ReasonsWhy />
+        <LoveLetter />
+        <Surprise />
+        <Footer />
+      </main>
+    </div>
   );
 }
+
+export default Index;
