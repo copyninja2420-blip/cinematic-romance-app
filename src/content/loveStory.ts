@@ -1,18 +1,3 @@
-/**
- * ────────────────────────────────────────────────────────────────
- *  EDIT EVERYTHING HERE  ❤
- *  Names, dates, photos, memories, letter, reasons, music.
- *  To add a photo: drop the file into `src/assets/` and import it
- *  at the top of this file, then use it as the `image` value.
- *  e.g.  import ourFirstDate from "@/assets/our-first-date.jpg";
- * ────────────────────────────────────────────────────────────────
- */
-import memoryAway from "@/assets/music/a-memory-away.mp3";
-import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3";
-import faithLove from "@/assets/music/faith-love-remix.mp3";
-import memoryAway from "@/assets/music/a-memory-away.mp3";
-import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3";
-import faithLove from "@/assets/music/faith-love-remix.mp3";
 export const couple = {
   wifeName: "My Love",
   husbandName: "Yours Forever",
