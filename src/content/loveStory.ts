@@ -124,15 +124,17 @@ export const story: StoryChapter[] = [
 export type Memory = { caption: string; note: string; image?: string };
 
 export const gallery: Memory[] = [
-  { caption: "Your Smile ❤️", note: "[ add photo ]", image: photoUs1.url },
-  { caption: "My Favorite Memory", note: "[ add photo ]", image: photoUs5.url },
-  { caption: "Just Us", note: "[ add photo ]", image: photoUs3.url },
-  { caption: "The Moment I Knew", note: "[ add photo ]", image: photoUs4.url },
-  { caption: "One Of My Happiest Days", note: "[ add photo ]", image: photoUs2.url },
+  { caption: "Your Smile ❤️", note: "My favorite sight", image: "/Snapchat-1872108738.jpg" },
+  { caption: "My Favorite Memory", note: "Unforgettable", image: "/Snapchat-1625205945.jpg" },
+  { caption: "Just Us", note: "Pure joy", image: "/IMG-20260320-WA0015.jpg" },
+  { caption: "The Moment I Knew", note: "Right here", image: "/IMG-20251207-WA0004.jpg" },
+  { caption: "One Of My Happiest Days", note: "With you", image: "/Snapchat-1616713582.jpg" },
   {
     caption: "Forever Doesn't Sound Long Enough.",
     note: "[ add photo ]",
-    image: photoUs1.url,
+
+    image: "/Snapchat-1872108738.jpg",
+    
   },
 ];
 
