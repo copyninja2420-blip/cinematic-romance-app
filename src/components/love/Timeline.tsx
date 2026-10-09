@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { story } from "@/content/loveStory";
-import SectionTitle from "@/components/love/SectionTitle";
+import { SectionTitle } from "@/components/love/SectionTitle";
 
 interface ChapterProps {
   index: number;
@@ -83,4 +83,4 @@ export function Timeline() {
 }
 
 export default Timeline;
-                    
+            
