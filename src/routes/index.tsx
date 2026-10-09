@@ -25,12 +25,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [unlocked, setUnlocked] = useState(false);
-  const [stage, setStage] = useState<"cake" | "lovemeter" | "flames" | "story">("cake");
+  const [stage, setStage] = useState<"opening" | "cake" | "lovemeter" | "flames" | "story">("opening");
 
-  // Stage 1: Passcode Entry Screen
-  if (!unlocked) {
-    return <Opening onUnlock={() => setUnlocked(true)} />;
+  // Stage 1: Opening Letter ("Hey, My Love...")
+  if (stage === "opening") {
+    return <Opening onOpen={() => setStage("cake")} />;
   }
 
   // Stage 2: Birthday Cake
@@ -48,7 +47,7 @@ function Index() {
     return <FlamesScreen onContinue={() => setStage("story")} />;
   }
 
-  // Stage 5: Full Cinematic Love Story Experience
+  // Stage 5: Full Romantic Love Story
   return (
     <div className="min-h-screen bg-[#0d0107] text-[#fff1f2] relative selection:bg-rose-900 selection:text-amber-100 overflow-x-hidden">
       <Atmosphere />
@@ -61,7 +60,6 @@ function Index() {
         <RomanticMilestones />
         <Reasons />
         <LoveLetter />
-        {/* Keepsake QR code card placed elegantly near the end */}
         <SecretGateway />
         <Surprise />
         <Finale />
