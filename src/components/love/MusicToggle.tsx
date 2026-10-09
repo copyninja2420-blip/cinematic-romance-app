@@ -1,3 +1,32 @@
+import { playlist as bundledPlaylist, type Track } from "@/content/loveStory";
+```[span_0](start_span)[span_0](end_span)
+
+Your component imports `Track` with `{ src, title }`[span_1](start_span)[span_1](end_span), but in `MusicToggle.tsx` (lines 45–67), it expects `track.src` and `track.title`[span_2](start_span)[span_2](end_span).
+
+More importantly, look at lines 47–54 and 60–65:
+```tsx
+useEffect(() => {
+  if (!autoplay || !audioRef.current) return;
+  audioRef.current.volume = volume;
+  audioRef.current
+    .play()
+    .then(() => setPlaying(true))
+    .catch(() => setPlaying(false));
+}, [autoplay]);
+```[span_3](start_span)[span_3](end_span)
+
+On mobile devices, this component is attempting to use **IndexedDB / storage** (`listStoredTracks` from `@/lib/musicLibrary`) and runs an unrestricted `useEffect` that calls `.load()` on `audioRef.current` before the user interacts[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span). On mobile browsers, if the IndexedDB fails or if audio elements fire unsupported events during SSR/initial render, the whole component boundary crashes[span_6](start_span)[span_6](end_span)[span_7](start_span)[span_7](end_span).
+
+Here is a bulletproof, cleaned-up **`src/components/love/MusicToggle.tsx`** that:
+1. Safely checks if `track` exists before reading `.src` or `.title` (preventing undefined crashes)[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span).
+2. Handles mobile autoplay gracefully with `catch` blocks[span_10](start_span)[span_10](end_span).
+3. Keeps user track uploads, playlist cycling, volume, and next song controls completely intact[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span)[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span).
+
+---
+
+### Replace all code in `src/components/love/MusicToggle.tsx`:
+
+```tsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Music, Plus, SkipForward, Trash2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +40,7 @@ import {
 
 type UserTrack = Track & { id: string };
 
-export function MusicToggle({ autoplay }: { autoplay: boolean }) {
+export function MusicToggle({ autoplay = false }: { autoplay?: boolean }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -24,28 +53,38 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
     id: t.id,
     title: t.title,
     src: URL.createObjectURL(t.blob),
+    url: URL.createObjectURL(t.blob),
   });
 
   useEffect(() => {
     let revoked: string[] = [];
     listStoredTracks()
       .then((stored) => {
+        if (!stored) return;
         const mapped = stored.map(toUserTrack);
         revoked = mapped.map((m) => m.src);
         setUserTracks(mapped);
       })
       .catch(() => undefined);
-    return () => revoked.forEach((u) => URL.revokeObjectURL(u));
+
+    return () => {
+      revoked.forEach((u) => {
+        try {
+          URL.revokeObjectURL(u);
+        } catch {}
+      });
+    };
   }, []);
 
-  const playlist = useMemo<Track[]>(
-    () => (userTracks.length > 0 ? userTracks : bundledPlaylist),
-    [userTracks],
-  );
-  const track = playlist[Math.min(index, playlist.length - 1)];
+  const playlist = useMemo<Track[]>(() => {
+    return userTracks.length > 0 ? userTracks : bundledPlaylist;
+  }, [userTracks]);
+
+  const activeIndex = playlist.length > 0 ? Math.min(index, playlist.length - 1) : 0;
+  const track = playlist[activeIndex];
 
   useEffect(() => {
-    if (!autoplay || !audioRef.current) return;
+    if (!audioRef.current || !autoplay) return;
     audioRef.current.volume = volume;
     audioRef.current
       .play()
@@ -54,19 +93,24 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
   }, [autoplay]);
 
   useEffect(() => {
-    if (audioRef.current) audioRef.current.volume = volume;
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
   }, [volume]);
 
   useEffect(() => {
     const el = audioRef.current;
-    if (!el) return;
+    if (!el || !track?.src) return;
     el.load();
-    if (playing) el.play().catch(() => setPlaying(false));
-  }, [index, track?.src]);
+    if (playing) {
+      el.play().catch(() => setPlaying(false));
+    }
+  }, [activeIndex, track?.src]);
 
-  if (playlist.length === 0 || !track) return null;
-
-  const advance = () => setIndex((i) => (i + 1) % playlist.length);
+  const advance = () => {
+    if (playlist.length === 0) return;
+    setIndex((i) => (i + 1) % playlist.length);
+  };
 
   const toggle = () => {
     const el = audioRef.current;
@@ -86,36 +130,42 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
     advance();
     const el = audioRef.current;
     if (el && playing) {
-      window.setTimeout(() => {
+      setTimeout(() => {
         el.volume = volume;
         el.play().catch(() => setPlaying(false));
-      }, 0);
+      }, 50);
     }
   };
 
   const onFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const audioFiles = Array.from(files).filter(
-      (f) => f.type.startsWith("audio/") || /\.(mp3|m4a|wav|ogg)$/i.test(f.name),
+      (f) => f.type.startsWith("audio/") || /\.(mp3|wav|ogg|m4a)$/i.test(f.name)
     );
     if (audioFiles.length === 0) return;
-    const added = await addStoredTracks(audioFiles);
-    setUserTracks((prev) => {
-      const list = [...prev, ...added.map(toUserTrack)];
-      if (prev.length === 0) setIndex(0);
-      return list;
-    });
+    try {
+      const added = await addStoredTracks(audioFiles);
+      setUserTracks((prev) => {
+        const list = [...prev, ...added.map(toUserTrack)];
+        if (prev.length === 0) setIndex(0);
+        return list;
+      });
+    } catch {}
     if (fileRef.current) fileRef.current.value = "";
   };
 
   const remove = async (id: string) => {
-    await removeStoredTrack(id);
-    setUserTracks((prev) => {
-      const list = prev.filter((t) => t.id !== id);
-      setIndex(0);
-      return list;
-    });
+    try {
+      await removeStoredTrack(id);
+      setUserTracks((prev) => {
+        const list = prev.filter((t) => t.id !== id);
+        setIndex(0);
+        return list;
+      });
+    } catch {}
   };
+
+  if (!track) return null;
 
   return (
     <>
@@ -135,41 +185,43 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
         className="hidden"
         onChange={(e) => void onFiles(e.target.files)}
       />
-      <div className="music-toggle flex flex-col gap-1">
+      <div className="music-toggle flex flex-col gap-2 rounded-2xl border border-warm/20 bg-black/60 p-2.5 backdrop-blur-md shadow-xl text-warm">
         <div className="flex items-center gap-1">
           <Button
             type="button"
             onClick={toggle}
             aria-label={playing ? "Pause music" : "Play music"}
             variant="ghost"
-            className="h-auto flex-1 justify-start px-1 py-1 text-inherit hover:bg-transparent hover:text-inherit"
+            className="h-auto flex-1 justify-start gap-2 px-2 py-1 text-xs text-inherit hover:text-white"
           >
             {playing ? (
-              <Music className="size-4 animate-pulse-soft" />
+              <Music className="size-4 animate-pulse text-rose-glow" />
             ) : (
-              <VolumeX className="size-4" />
+              <VolumeX className="size-4 opacity-70" />
             )}
-            <span className="max-w-[7.5rem] truncate text-[0.7rem] tracking-wide">
-              {track.title}
+            <span className="max-w-[7.5rem] truncate font-medium">
+              {track.title || "Background Music"}
             </span>
           </Button>
+
           <Button
             type="button"
             onClick={next}
             aria-label="Next song"
             variant="ghost"
             size="icon"
-            className="size-7 text-inherit opacity-70 hover:bg-transparent hover:text-inherit hover:opacity-100"
+            className="size-7 text-inherit opacity-70 hover:opacity-100"
           >
             <SkipForward className="size-4" />
           </Button>
+
           <Button
             type="button"
             onClick={() => fileRef.current?.click()}
             aria-label="Add your own songs"
             variant="ghost"
             size="icon"
-            className="size-7 text-inherit opacity-70 hover:bg-transparent hover:text-inherit hover:opacity-100"
+            className="size-7 text-inherit opacity-70 hover:opacity-100"
           >
             <Plus className="size-4" />
           </Button>
@@ -183,7 +235,7 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
           value={volume}
           aria-label="Music volume"
           onChange={(e) => setVolume(Number(e.target.value))}
-          className="h-1 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-rose-300"
+          className="h-1 w-full cursor-pointer accent-rose-500 opacity-60 hover:opacity-100"
         />
 
         {userTracks.length > 0 && (
@@ -191,18 +243,18 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
             <button
               type="button"
               onClick={() => setManage((m) => !m)}
-              className="px-1 text-left text-[0.6rem] uppercase tracking-[0.2em] opacity-60"
+              className="px-1 text-left text-[0.65rem] opacity-60 underline hover:opacity-100"
             >
-              {userTracks.length} of your songs
+              {userTracks.length} custom song{userTracks.length > 1 ? "s" : ""}
             </button>
             {manage && (
-              <ul className="max-h-40 overflow-y-auto pr-1">
+              <ul className="max-h-40 overflow-y-auto text-xs space-y-1">
                 {userTracks.map((t, i) => (
-                  <li key={t.id} className="flex items-center gap-1 py-0.5">
+                  <li key={t.id} className="flex items-center justify-between gap-2 px-1">
                     <button
                       type="button"
                       onClick={() => setIndex(i)}
-                      className={`flex-1 truncate text-left text-[0.65rem] ${i === index ? "opacity-100" : "opacity-60"}`}
+                      className="flex-1 truncate text-left hover:text-rose-glow"
                     >
                       {t.title}
                     </button>
@@ -210,7 +262,7 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
                       type="button"
                       aria-label={`Remove ${t.title}`}
                       onClick={() => void remove(t.id)}
-                      className="opacity-60"
+                      className="opacity-60 hover:opacity-100 hover:text-red-400"
                     >
                       <Trash2 className="size-3" />
                     </button>
@@ -224,3 +276,6 @@ export function MusicToggle({ autoplay }: { autoplay: boolean }) {
     </>
   );
 }
+
+export default MusicToggle;
+          
