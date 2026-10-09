@@ -15,7 +15,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
     setIsScanning(true);
 
     const startTime = Date.now();
-    const duration = 2800; // 2.8 seconds hold
+    const duration = 2800; // 2.8 second hold
 
     timerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -124,7 +124,7 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
               </div>
             </div>
 
-            {/* Hold status text */}
+            {/* Status text */}
             <p className="text-xs font-serif text-amber-200/80 mt-5 italic">
               {isScanning
                 ? `Reading Heart Rhythm... ${Math.round(progress)}%`
@@ -149,12 +149,12 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
         )}
       </div>
 
-      {/* Refined Luxury Action Button */}
+      {/* Luxury Fulfilled Action Button */}
       <div className="w-full max-w-xs text-center z-10 mb-4">
         {scanComplete && (
           <button
             onClick={onContinue}
-            className="relative group w-full py-4 px-8 rounded-full bg-gradient-to-r from-[#881337] via-[#e11d48] to-[#9f1239] text-amber-100 font-serif text-xs tracking-widest uppercase border border-amber-300/40 shadow-[0_0_30px_rgba(225,29,72,0.45),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:shadow-[0_0_40px_rgba(251,113,133,0.65)] hover:scale-[1.02] active:scale-95 transition-all duration-300 overflow-hidden"
+            className="relative group w-full py-4 px-8 rounded-full bg-gradient-to-r from-[#881337] via-[#e11d48] to-[#9f1239] text-amber-100 font-serif text-xs tracking-widest uppercase border border-amber-300/40 shadow-[0_0_30px_rgba(225,29,72,0.45),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:shadow-[0_0_40px_rgba(251,113,133,0.65)] hover:scale-[1.02] active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer"
           >
             {/* Shimmer sweep effect */}
             <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
@@ -170,4 +170,3 @@ export const LoveMeterScreen: React.FC<LoveMeterScreenProps> = ({ onContinue }) 
     </div>
   );
 };
-              
