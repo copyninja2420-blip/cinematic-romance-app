@@ -11,11 +11,11 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3.asset.json";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3.asset.json";
 import faithLove from "@/assets/music/faith-love-remix.mp3.asset.json";
-import photoUs1 from "@/assets/photos/Snapchat-1625205945-2.jpg.asset.json";
-import photoUs2 from "@/assets/photos/Snapchat-1634327033-2.jpg.asset.json";
-import photoUs3 from "@/assets/photos/file_0000000014fc71fa8c9a1eacdf6b924f-2.png.asset.json";
-import photoUs4 from "@/assets/photos/Snapchat-1267333793-2.jpg.asset.json";
-import photoUs5 from "@/assets/photos/Snapchat-1001237552.jpg.asset.json";
+
+
+
+
+
 
 export const couple = {
   wifeName: "My Love", // ← her name
@@ -75,42 +75,48 @@ export const story: StoryChapter[] = [
     date: "[ ADD THE DATE ]",
     caption: "Where everything quietly began",
     body: "[ Write about the first time you saw her — the place, what she wore, what you thought in that very first second. ]",
-    image: photoUs1.url,
+    image: "/IMG-20260320-WA0015.jpg",
+    
   },
   {
     label: "THE MOMENT I FELL FOR YOU",
     date: "[ ADD THE DATE ]",
     caption: "The second my heart decided",
     body: "[ Describe the small ordinary moment when you knew she was the one. ]",
-    image: photoUs4.url,
+    image: "/IMG-20251207-WA0004.jpg",
+    
   },
   {
     label: "OUR FIRST SPECIAL MEMORY",
     date: "[ ADD THE DATE ]",
     caption: "The first day that became ours",
     body: "[ Write about your first date, first call, first everything. ]",
-    image: photoUs5.url,
+    image: "/Snapchat-1616713582.jpg",
+    
   },
   {
     label: "THE MOMENTS THAT MADE US",
     date: "[ ADD THE DATE ]",
     caption: "The days we keep replaying",
     body: "[ Our trips, our late-night talks, the songs, the rain, the silly fights and the sweeter making-ups. ]",
-    image: photoUs2.url,
+    image: "/Snapchat-1872108738.jpg",
+    
   },
   {
     label: "THE MEMORIES I WILL ALWAYS KEEP",
     date: "[ ADD THE DATE ]",
     caption: "Held safely in my heart",
     body: "[ The moments that made a home out of us — write them here exactly as you remember them. ]",
-    image: photoUs3.url,
+    image: "/Snapchat-1625205945.jpg",
+    
   },
   {
     label: "OUR FUTURE",
     date: "Today & always",
     caption: "Every chapter after this one",
     body: "[ Write about the life you dream of building with her. ]",
-    image: photoUs1.url,
+    image: "/IMG-20251207-WA0004.jpg",
+    
   },
 ];
 
