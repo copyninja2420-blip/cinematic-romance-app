@@ -34,7 +34,7 @@ function Index() {
 
   // Stage 2: Birthday Cake
   if (stage === "cake") {
-    return <BirthdayCake onContinue={() => setStage("lovemeter")} />;
+    return <BirthdayCake onEnter={() => setStage("lovemeter")} />;
   }
 
   // Stage 3: Love Scanner
