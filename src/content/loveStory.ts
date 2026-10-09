@@ -10,6 +10,26 @@
 import memoryAway from "@/assets/music/a-memory-away.mp3";
 import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3";
 import faithLove from "@/assets/music/faith-love-remix.mp3";
+import memoryAway from "@/assets/music/a-memory-away.mp3";
+import deserveLoved from "@/assets/music/deserve-to-be-loved.mp3";
+import faithLove from "@/assets/music/faith-love-remix.mp3";
+```[span_1](start_span)[span_1](end_span)
+
+Those three lines are still at the top of `src/content/loveStory.ts`[span_2](start_span)[span_2](end_span)! Because those files do not exist in GitHub, the bundler crashes or fails to package the build properly[span_3](start_span)[span_3](end_span).
+
+Also, in that same screenshot on line 20[span_4](start_span)[span_4](end_span):
+```ts
+export type Track = { src: string; url: string; };
+```[span_5](start_span)[span_5](end_span)
+is missing `title: string;` which causes TypeScript errors wherever playlist titles are read.
+
+---
+
+### The Clean, Exact Code
+
+Open **`src/content/loveStory.ts`** on GitHub. **Select everything (Ctrl+A / Cmd+A), hit delete**, and paste this exact file. Notice there are **zero import lines at the top**:
+
+```ts
 export const couple = {
   wifeName: "My Love",
   husbandName: "Yours Forever",
@@ -253,3 +273,4 @@ export const whatsappReaction = {
   subtext: "Sends a direct message straight to my WhatsApp",
   message: "I just finished reading your surprise... and I love you so much ❤️🥺",
 };
+    
