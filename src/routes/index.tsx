@@ -11,13 +11,13 @@ import { FlamesScreen } from "@/components/love/FlamesScreen";
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { Hero } from "@/components/love/Hero";
+import { Timeline } from "@/components/love/Timeline";
+import { Gallery } from "@/components/love/Gallery";
+import { RomanticMilestones } from "@/components/love/RomanticMilestones";
+import { Reasons } from "@/components/love/Reasons";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
-import { Reasons } from "@/components/love/Reasons";
-import { RomanticMilestones } from "@/components/love/RomanticMilestones";
-import { Timeline } from "@/components/love/Timeline";
-import { Gallery } from "@/components/love/Gallery";
 import { Finale } from "@/components/love/Finale";
 
 export const Route = createFileRoute("/")({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [stage, setStage] = useState<"opening" | "cake" | "lovemeter" | "flames" | "story">("opening");
 
-  // Stage 1: Opening Passcode / Letter
+  // Stage 1: Opening Passcode Gate
   if (stage === "opening") {
     return <Opening onOpen={() => setStage("cake")} />;
   }
@@ -47,19 +47,20 @@ function Index() {
     return <FlamesScreen onContinue={() => setStage("story")} />;
   }
 
-  // Stage 5: Full Romantic Love Story (Original Lovable Layout)
+  // Stage 5: Original Lovable Story Stream
   return (
-    <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-32 overflow-x-hidden">
-      {/* Floating particles & ambiance */}
+    <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-24 overflow-x-hidden">
       <Atmosphere />
 
-      {/* Floating Music Pill Player (Top-Center) */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 pointer-events-auto">
-        <MusicToggle autoplay={true} />
+      {/* Floating Audio Bar */}
+      <div className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-sm">
+          <MusicToggle autoplay={true} />
+        </div>
       </div>
 
-      {/* Main Single Column Story */}
-      <main className="relative z-10 flex flex-col items-center w-full max-w-md mx-auto px-4 pt-16 space-y-12">
+      {/* Unconstrained Main Stream */}
+      <main className="relative z-10 w-full">
         <Hero />
         <LoveLetter />
         <SecretGateway />
