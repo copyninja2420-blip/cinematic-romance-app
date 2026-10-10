@@ -14,7 +14,6 @@ import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
 import { Reasons } from "@/components/love/Reasons";
 import { Finale } from "@/components/love/Finale";
-import { AvatarWalk } from "@/components/love/AvatarWalk";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -33,9 +32,6 @@ function Index() {
     <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-32 overflow-x-hidden">
       {/* Background Ambience */}
       <Atmosphere />
-
-      {/* 3D Boy Avatar Walking */}
-      <AvatarWalk />
 
       {/* Centered Top Music Capsule */}
       <div className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
@@ -72,4 +68,3 @@ function Index() {
 }
 
 export default Index;
-        
