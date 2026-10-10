@@ -11,13 +11,13 @@ import { FlamesScreen } from "@/components/love/FlamesScreen";
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { MusicToggle } from "@/components/love/MusicToggle";
 import { Hero } from "@/components/love/Hero";
-import { Timeline } from "@/components/love/Timeline";
-import { Gallery } from "@/components/love/Gallery";
-import { RomanticMilestones } from "@/components/love/RomanticMilestones";
-import { Reasons } from "@/components/love/Reasons";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
+import { Reasons } from "@/components/love/Reasons";
+import { RomanticMilestones } from "@/components/love/RomanticMilestones";
+import { Timeline } from "@/components/love/Timeline";
+import { Gallery } from "@/components/love/Gallery";
 import { Finale } from "@/components/love/Finale";
 
 export const Route = createFileRoute("/")({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [stage, setStage] = useState<"opening" | "cake" | "lovemeter" | "flames" | "story">("opening");
 
-  // Stage 1: Opening Passcode Gate
+  // Stage 1: Passcode Gate
   if (stage === "opening") {
     return <Opening onOpen={() => setStage("cake")} />;
   }
@@ -49,26 +49,44 @@ function Index() {
 
   // Stage 5: Original Lovable Story Stream
   return (
-    <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-24 overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-32 overflow-x-hidden">
+      {/* Background Floating Hearts & Glow */}
       <Atmosphere />
 
-      {/* Floating Audio Bar */}
-      <div className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
+      {/* Music Toggle Floating Header */}
+      <div className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
         <div className="pointer-events-auto w-full max-w-sm">
           <MusicToggle autoplay={true} />
         </div>
       </div>
 
-      {/* Unconstrained Main Stream */}
-      <main className="relative z-10 w-full">
+      {/* Main Stream Matching Original Screen Hierarchy */}
+      <main className="relative z-10 w-full max-w-lg mx-auto px-4 flex flex-col items-center space-y-24">
+        {/* 1. Hero Cover */}
         <Hero />
+
+        {/* 2. Dear My Love Parchment Letter */}
         <LoveLetter />
+
+        {/* 3. Hidden Message, Our Little Moment, Heart Shower Cards */}
         <SecretGateway />
+
+        {/* 4. "Wait... There's one more thing" Unlock */}
         <Surprise />
+
+        {/* 5. 15 Reasons (Tap each heart grid) */}
         <Reasons />
+
+        {/* 6. Since That Special Yes / Counters */}
         <RomanticMilestones />
+
+        {/* 7. Timeline / Journey */}
         <Timeline />
+
+        {/* 8. Photo Polaroids / Gallery */}
         <Gallery />
+
+        {/* 9. Final Message & Share */}
         <Finale />
       </main>
     </div>
