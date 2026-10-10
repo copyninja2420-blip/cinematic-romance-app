@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-// Gateway & Interactive Stages
-import { Opening } from "@/components/love/Opening";
-import { BirthdayCake } from "@/components/love/BirthdayCake";
-import { LoveMeterScreen } from "@/components/love/LoveMeterScreen";
-import { FlamesScreen } from "@/components/love/FlamesScreen";
-
-// Romantic Story Sections
+// Core components
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { MusicToggle } from "@/components/love/MusicToggle";
+import { Opening } from "@/components/love/Opening";
 import { Hero } from "@/components/love/Hero";
+import { Timeline } from "@/components/love/Timeline";
 import { LoveLetter } from "@/components/love/LoveLetter";
 import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
 import { Reasons } from "@/components/love/Reasons";
-import { RomanticMilestones } from "@/components/love/RomanticMilestones";
-import { Timeline } from "@/components/love/Timeline";
-import { Gallery } from "@/components/love/Gallery";
 import { Finale } from "@/components/love/Finale";
 
 export const Route = createFileRoute("/")({
@@ -25,69 +18,62 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [stage, setStage] = useState<"opening" | "cake" | "lovemeter" | "flames" | "story">("opening");
+  const [unlocked, setUnlocked] = useState(false);
 
-  // Stage 1: Passcode Gate
-  if (stage === "opening") {
-    return <Opening onOpen={() => setStage("cake")} />;
+  // Screen 1: Passcode Gate & Opening
+  if (!unlocked) {
+    return <Opening onOpen={() => setUnlocked(true)} />;
   }
 
-  // Stage 2: Birthday Cake
-  if (stage === "cake") {
-    return <BirthdayCake onEnter={() => setStage("lovemeter")} />;
-  }
-
-  // Stage 3: Love Scanner
-  if (stage === "lovemeter") {
-    return <LoveMeterScreen onContinue={() => setStage("flames")} />;
-  }
-
-  // Stage 4: FLAMES Oracle
-  if (stage === "flames") {
-    return <FlamesScreen onContinue={() => setStage("story")} />;
-  }
-
-  // Stage 5: Original Lovable Story Stream
+  // Screen 2: Original Single-Page Romantic Story
   return (
     <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-32 overflow-x-hidden">
-      {/* Background Floating Hearts & Glow */}
+      {/* Floating Sparkles & Hearts */}
       <Atmosphere />
 
-      {/* Music Toggle Floating Header */}
-      <div className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-sm">
+      {/* Floating Glassmorphism Music Capsule */}
+      <div className="fixed top-3 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-xs">
           <MusicToggle autoplay={true} />
         </div>
       </div>
 
-      {/* Main Stream Matching Original Screen Hierarchy */}
-      <main className="relative z-10 w-full max-w-lg mx-auto px-4 flex flex-col items-center space-y-24">
-        {/* 1. Hero Cover */}
-        <Hero />
+      {/* Main Stream with Lovable's Exact Spacing */}
+      <main className="relative z-10 w-full flex flex-col items-center">
+        {/* 1. Hero */}
+        <section className="w-full min-h-screen flex items-center justify-center">
+          <Hero />
+        </section>
 
-        {/* 2. Dear My Love Parchment Letter */}
-        <LoveLetter />
+        {/* 2. Timeline */}
+        <section className="w-full max-w-md px-4 py-16">
+          <Timeline />
+        </section>
 
-        {/* 3. Hidden Message, Our Little Moment, Heart Shower Cards */}
-        <SecretGateway />
+        {/* 3. Letter with Envelope */}
+        <section className="w-full max-w-md px-4 py-16">
+          <LoveLetter />
+        </section>
 
-        {/* 4. "Wait... There's one more thing" Unlock */}
-        <Surprise />
+        {/* 4. Three Secret Message Cards */}
+        <section className="w-full max-w-md px-4 py-16">
+          <SecretGateway />
+        </section>
 
-        {/* 5. 15 Reasons (Tap each heart grid) */}
-        <Reasons />
+        {/* 5. "Wait... There's one more thing" */}
+        <section className="w-full max-w-md px-4 py-16">
+          <Surprise />
+        </section>
 
-        {/* 6. Since That Special Yes / Counters */}
-        <RomanticMilestones />
+        {/* 6. 15 Reasons 3x5 Grid */}
+        <section className="w-full max-w-md px-4 py-16">
+          <Reasons />
+        </section>
 
-        {/* 7. Timeline / Journey */}
-        <Timeline />
-
-        {/* 8. Photo Polaroids / Gallery */}
-        <Gallery />
-
-        {/* 9. Final Message & Share */}
-        <Finale />
+        {/* 7. Finale */}
+        <section className="w-full max-w-md px-4 py-20">
+          <Finale />
+        </section>
       </main>
     </div>
   );
