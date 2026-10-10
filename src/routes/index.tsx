@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-// Core components
+// Gateway
+import { Opening } from "@/components/love/Opening";
+
+// Romantic Story Sections
 import { Atmosphere } from "@/components/love/Atmosphere";
 import { MusicToggle } from "@/components/love/MusicToggle";
-import { Opening } from "@/components/love/Opening";
 import { Hero } from "@/components/love/Hero";
 import { Timeline } from "@/components/love/Timeline";
 import { LoveLetter } from "@/components/love/LoveLetter";
@@ -12,6 +14,7 @@ import { SecretGateway } from "@/components/love/SecretGateway";
 import { Surprise } from "@/components/love/Surprise";
 import { Reasons } from "@/components/love/Reasons";
 import { Finale } from "@/components/love/Finale";
+import { AvatarWalk } from "@/components/love/AvatarWalk";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -20,63 +23,53 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [unlocked, setUnlocked] = useState(false);
 
-  // Screen 1: Passcode Gate & Opening
+  // Entrance Passcode Screen
   if (!unlocked) {
     return <Opening onOpen={() => setUnlocked(true)} />;
   }
 
-  // Screen 2: Original Single-Page Romantic Story
+  // Exact Lovable Story Stream
   return (
     <div className="relative min-h-screen bg-[#0d0107] text-[#fff0f5] selection:bg-rose-500/30 selection:text-white pb-32 overflow-x-hidden">
-      {/* Floating Sparkles & Hearts */}
+      {/* Background Ambience */}
       <Atmosphere />
 
-      {/* Floating Glassmorphism Music Capsule */}
-      <div className="fixed top-3 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-xs">
+      {/* 3D Boy Avatar Walking */}
+      <AvatarWalk />
+
+      {/* Centered Top Music Capsule */}
+      <div className="fixed top-3 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-sm">
           <MusicToggle autoplay={true} />
         </div>
       </div>
 
-      {/* Main Stream with Lovable's Exact Spacing */}
-      <main className="relative z-10 w-full flex flex-col items-center">
+      {/* Exact Lovable Screen Order */}
+      <main className="relative z-10 w-full max-w-md mx-auto px-4 flex flex-col items-center space-y-20 pt-4">
         {/* 1. Hero */}
-        <section className="w-full min-h-screen flex items-center justify-center">
-          <Hero />
-        </section>
+        <Hero />
 
-        {/* 2. Timeline */}
-        <section className="w-full max-w-md px-4 py-16">
-          <Timeline />
-        </section>
+        {/* 2. Timeline ("The moment I fell for you...") */}
+        <Timeline />
 
-        {/* 3. Letter with Envelope */}
-        <section className="w-full max-w-md px-4 py-16">
-          <LoveLetter />
-        </section>
+        {/* 3. Red Wax Sealed Envelope & Letter */}
+        <LoveLetter />
 
-        {/* 4. Three Secret Message Cards */}
-        <section className="w-full max-w-md px-4 py-16">
-          <SecretGateway />
-        </section>
+        {/* 4. Three Cards (Hidden Message, Our Little Moment, Heart Shower) */}
+        <SecretGateway />
 
-        {/* 5. "Wait... There's one more thing" */}
-        <section className="w-full max-w-md px-4 py-16">
-          <Surprise />
-        </section>
+        {/* 5. "Wait... There's one more thing." */}
+        <Surprise />
 
-        {/* 6. 15 Reasons 3x5 Grid */}
-        <section className="w-full max-w-md px-4 py-16">
-          <Reasons />
-        </section>
+        {/* 6. 15 Reasons (No. 1 to No. 15 hearts grid) */}
+        <Reasons />
 
-        {/* 7. Finale */}
-        <section className="w-full max-w-md px-4 py-20">
-          <Finale />
-        </section>
+        {/* 7. Finale ("If I could choose again...", "Share this surprise") */}
+        <Finale />
       </main>
     </div>
   );
 }
 
 export default Index;
+        
