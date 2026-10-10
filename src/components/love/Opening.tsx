@@ -56,11 +56,10 @@ export function Opening({ onOpen }: OpeningProps) {
         bursting ? "curtain-burst" : ""
       }`}
     >
-      {/* Floating Hearts & Sparks */}
       <Atmosphere particles={28} hearts={14} />
       <Fireworks bursts={6} sparks={14} />
 
-      {/* Decorative Gold Circular Rings */}
+      {/* Decorative Gold Circular Accents */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
         <div className="w-[340px] h-[340px] md:w-[480px] md:h-[480px] rounded-full border border-amber-500/15 animate-pulse" />
         <div className="absolute w-[440px] h-[440px] md:w-[600px] md:h-[600px] rounded-full border border-amber-500/10" />
@@ -68,7 +67,6 @@ export function Opening({ onOpen }: OpeningProps) {
 
       {stage === "passcode" ? (
         <div className="relative z-10 w-full max-w-sm mx-auto flex flex-col items-center text-center space-y-8 animate-fade-in">
-          {/* Header */}
           <div className="space-y-3">
             <div className="flex items-center justify-center gap-3">
               <span className="w-8 h-[1px] bg-amber-400/40" />
@@ -82,7 +80,7 @@ export function Opening({ onOpen }: OpeningProps) {
             </p>
           </div>
 
-          {/* 4 Gold-Bordered Digit Boxes */}
+          {/* 4 Gold Number Boxes */}
           <div className="flex items-center justify-center gap-3">
             {digits.map((d, i) => (
               <input
@@ -109,7 +107,7 @@ export function Opening({ onOpen }: OpeningProps) {
             </p>
           )}
 
-          {/* Monogram Seal Button */}
+          {/* Circular S Monogram Button */}
           <div className="pt-4 flex flex-col items-center">
             <button
               type="button"
@@ -130,7 +128,7 @@ export function Opening({ onOpen }: OpeningProps) {
           </p>
         </div>
       ) : (
-        /* Invitation Step */
+        /* Invitation Card Step */
         <div className="relative z-10 w-full max-w-sm mx-auto flex flex-col items-center text-center space-y-6 animate-fade-in">
           <div className="text-amber-300/80 text-xl font-serif">❦</div>
 
@@ -169,4 +167,3 @@ export function Opening({ onOpen }: OpeningProps) {
 }
 
 export default Opening;
-              
